@@ -1,41 +1,55 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": [
+    "config:recommended"
+  ],
   "commitMessagePrefix": "⬆️",
   "prHourlyLimit": 0,
-  "stabilityDays": 3,
+  "minimumReleaseAge": "3 days",
   "prCreation": "not-pending",
-  "ignoreDeps": ["eclipse-temurin", "postgres", "node"],
+  "ignoreDeps": [
+    "eclipse-temurin",
+    "postgres",
+    "node"
+  ],
   "updateInternalDeps": true,
   "rangeStrategy": "pin",
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
-      "matchPackagePatterns": [
-        "@types/*",
-        "eslint-plugin-*",
-        "eslint-config-*",
-        "prettier",
-        "@typescript-eslint/*",
-        "@babel/core",
-        "@testing-library/react",
-        "@vitejs/plugin-react",
-        "cypress",
-        "jsdom",
-        "vite-tsconfig-paths",
-        "vitest",
-        "webpack"
+      "matchDepTypes": [
+        "devDependencies"
       ],
-      "automerge": true
+      "automerge": true,
+      "matchPackageNames": [
+        "/@types/*/",
+        "/eslint-plugin-*/",
+        "/eslint-config-*/",
+        "/prettier/",
+        "/@typescript-eslint/*/",
+        "/@babel/core/",
+        "/@testing-library/react/",
+        "/@vitejs/plugin-react/",
+        "/cypress/",
+        "/jsdom/",
+        "/vite-tsconfig-paths/",
+        "/vitest/",
+        "/webpack/"
+      ]
     },
     {
-      "matchDepTypes": ["dependencies"],
-      "matchPackagePatterns": ["@vercel/analytics"],
-      "automerge": true
+      "matchDepTypes": [
+        "dependencies"
+      ],
+      "automerge": true,
+      "matchPackageNames": [
+        "/@vercel/analytics/"
+      ]
     },
     {
-      "matchPackagePatterns": ["^org.jetbrains.kotlin.*"],
-      "groupName": "Kotlin packages"
+      "groupName": "Kotlin packages",
+      "matchPackageNames": [
+        "/^org.jetbrains.kotlin.*/"
+      ]
     }
   ]
 }
