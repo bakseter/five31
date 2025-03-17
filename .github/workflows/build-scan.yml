@@ -42,7 +42,7 @@ jobs:
           context: 'backend'
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
           format: 'sarif'
