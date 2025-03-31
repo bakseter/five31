@@ -129,8 +129,8 @@
         "eslint": "8.57.1",
         "next": "15.2.4",
         "next-auth": "5.0.0-beta.25",
-        "react": "19.0.0",
-        "react-dom": "19.0.0",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
         "typescript-json-decoder": "1.0.11"
     },
     "devDependencies": {
