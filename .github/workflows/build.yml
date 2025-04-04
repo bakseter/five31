@@ -1,4 +1,4 @@
-name: Build backend & Trivy scan
+name: Build images
 
 on:
   pull_request:
@@ -7,16 +7,21 @@ on:
     - cron: '3 4 * * 5'
 
 jobs:
-  build-backend-trivy-scan:
-    name: 'Build backend & Trivy scan'
+  build:
+    name: 'Build ${{ matrix.image-name }}'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image-name:
+          - backend
+          - frontend
     permissions:
       actions: read
       contents: read
       security-events: write
       packages: write
     env:
-      IMAGE_NAME: 'ghcr.io/${{ github.repository }}/backend'
+      IMAGE_NAME: 'ghcr.io/${{ github.repository }}/${{ matrix.image-name }}'
       TRIVY_SARIF: 'trivy-results.sarif'
     steps:
       - name: Checkout repository
@@ -39,7 +44,7 @@ jobs:
           tags: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
           cache-from: 'type=registry,ref=${{ env.IMAGE_NAME }}:latest'
           cache-to: 'type=inline'
-          context: 'backend'
+          context: '${{ matrix.image-name }}'
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@0.30.0
