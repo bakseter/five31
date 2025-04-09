@@ -1,0 +1,33 @@
+x-common-variables: &common-variables
+  POSTGRES_DB: 'postgres'
+  POSTGRES_USER: 'postgres'
+  POSTGRES_PASSWORD: 'password'
+
+services:
+  api:
+    build: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      database:
+        condition: service_healthy
+    links:
+      - database
+    environment:
+      <<: *common-variables
+      DATABASE_HOST: 'database'
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+
+  database:
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment: *common-variables

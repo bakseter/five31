@@ -1,0 +1,57 @@
+{{ $cycles := .Cycles -}}
+{{ $weeks := .Weeks -}}
+{{ $metadata := .Metadata -}}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>five31</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <div class="container mx-auto mt-8">
+            <h1 class="text-3xl font-bold mb-4">Workouts</h1>
+        </div>
+
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+        <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
+
+        <div id="cycles" class="flex flex-wrap">
+        {{ range $cycle := $cycles }}
+            <a href="/cycle/{{ $cycle }}/week/1" class="block p-4 border border-slate-400 rounded-lg mb-4{{ if eq $cycle $metadata.CurrentCycle }} bg-slate-400 text-white{{ end }}">
+                Cycle {{ $cycle }}
+            </a>
+        {{ end }}
+        </div>
+
+        <div id="weeks" class="flex flex-wrap">
+        {{ range $week := $weeks }}
+            <a href="/cycle/{{ or $metadata.CurrentCycle "1" }}/week/{{ $week }}" class="block p-4 border border-slate-400 rounded-lg mb-4 {{ if eq $week $metadata.CurrentWeek }} bg-slate-400 text-white{{ end }}">
+                Week {{ $week }}
+            </a>
+        {{ end }}
+        </div>
+
+        <div id="workouts" class="flex flex-wrap">
+        {{ range $day := .Days }}
+            <h3 class="text-lg font-bold mb-4">Day {{ $day }}</h3>
+            <div
+                class="w-1/3 p-4"
+                hx-get="/api/v1/workout?cycle={{ or $metadata.CurrentCycle "1" }}&week={{ or $metadata.CurrentWeek "1" }}&day={{ $day }}"
+                hx-trigger="load"
+                hx-target="#workout-cycle-{{ $metadata.CurrentCycle }}-week-{{ $metadata.CurrentWeek }}-day-{{ $day }}"
+                hx-swap="innerHTML"
+            >
+                <div
+                    id="workout-cycle-{{ $metadata.CurrentCycle }}-week-{{ $metadata.CurrentWeek }}-day-{{ $day }}"
+                    class="border border-slate-400 rounded-lg p-4"
+                >
+                    <h3 class="text-lg font-bold mb-4">Loading...</h3>
+                </div>
+            </div>
+        {{ end }}
+    </body>
+</html>

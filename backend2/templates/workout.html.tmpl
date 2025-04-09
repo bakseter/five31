@@ -1,0 +1,47 @@
+<div id="workout-cycle-{{ .Cycle }}-week-{{ .Week }}-day-{{ .Day }}">
+    <h3 class="text-lg font-bold mb-4">{{ .Exercise }}</h3>
+    <table class="border-collapse border-spacing-2 border border-slate-400 table-auto">
+        <thead>
+            <tr class="border border-slate-400">
+                <th class="p2">Sets</th>
+                <th class="p2">Percent</th>
+                <th class="p2">Weight</th>
+                <th class="p2">Actual</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr class="px-2 py-4 pt-8 font-bold">
+                <td>Warmup</td>
+            </tr>
+            {{ range .Warmups }}
+            <tr>
+                <td class="p2">
+                    1x{{ .Reps }}
+                </td>
+                <td class="p2">
+                    {{ .Percent }}%
+                </td>
+                <td class="p2">
+                    {{ .Weight }} kg
+                </td>
+            </tr>
+            {{ end }}
+            <tr class="px-2 py-4 pt-8 font-bold">
+                <td>Main sets</td>
+            </tr>
+            {{ range .MainSets }}
+            <tr>
+                <td class="p2">
+                    1x{{ .Reps }}
+                </td>
+                <td class="p2">
+                    {{ .Percent }}%
+                </td>
+                <td class="p2">
+                    {{ .Weight }} kg
+                </td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
