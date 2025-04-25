@@ -32,7 +32,7 @@ fun Application.module() {
     ).init()
 
     configureAuthentication(devSecret = devSecret, devAudience = devAudience, devIssuer = devIssuer)
-    configureCORS()
+    configureCORS(dev = dev)
     configureContentNegotiation()
     configureRouting(dev = dev, devSecret = devSecret, devAudience = devAudience, devIssuer = devIssuer)
     // configureDocumentation()
