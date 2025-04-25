@@ -9,4 +9,6 @@
     </root>
     <logger name="io.netty" level="info"/>
     <logger name="io.ktor.routing.Routing" level="debug"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="info"/>
+    <logger name="com.zaxxer.hikari.pool.PoolBase" level="info"/>
 </configuration>

@@ -6,9 +6,10 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.cors.routing.CORS
 
-fun Application.configureCORS() {
+fun Application.configureCORS(dev: Boolean) {
     install(CORS) {
-        anyHost()
+        if (dev) allowHost("localhost", schemes = listOf("http"))
+        allowHost("bakseter.net", subDomains = listOf("five31"), schemes = listOf("https"))
 
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Put)

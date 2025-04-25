@@ -29,7 +29,7 @@ RUN ./gradlew shadowJar --build-cache --no-rebuild --no-daemon
 
 
 # Run the server
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /opt/app
 
@@ -37,6 +37,6 @@ RUN apk update && \
     apk upgrade && \
     apk add --no-cache expat-dev
 
-COPY --from=build /opt/build/build/libs/531-backend-0.0.1-all.jar /opt/app/build/libs/
+COPY --from=build /opt/build/build/libs/*-all.jar /opt/app/app.jar
 
-CMD ["java", "-jar", "/opt/app/build/libs/531-backend-0.0.1-all.jar"]
+CMD ["java", "-jar", "/opt/app/app.jar"]
