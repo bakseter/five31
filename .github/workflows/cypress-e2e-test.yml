@@ -68,7 +68,7 @@ jobs:
           pnpm cypress install
 
       - name: Run Cypress end-to-end tests
-        uses: cypress-io/github-action@v6.7.16
+        uses: cypress-io/github-action@v6.10.2
         with:
           working-directory: 'frontend'
           install-command: 'pnpm i'
