@@ -51,7 +51,7 @@ jobs:
       TRIVY_SARIF: 'trivy.sarif'
     steps:
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.32.0
         with:
           image-ref: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
           format: 'sarif'
