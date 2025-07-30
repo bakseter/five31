@@ -31,7 +31,13 @@ fun Route.baseWeightsRoutesV1(authConfig: String) {
 
 fun Route.getBaseWeightsV1() {
     get("/base-weights") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -67,7 +73,13 @@ fun Route.getBaseWeightsV1() {
 
 fun Route.putBaseWeightsV1() {
     put("/base-weights") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
 
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
@@ -123,7 +135,13 @@ fun Route.putBaseWeightsV1() {
 
 fun Route.getBaseWeightsModifierV1() {
     get("/base-weights/modifier/{cycle}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -139,15 +157,15 @@ fun Route.getBaseWeightsModifierV1() {
 
         val mod =
             transaction {
-                BaseWeightsModifier.selectAll()
+                BaseWeightsModifier
+                    .selectAll()
                     .where {
                         BaseWeightsModifier.email eq email and
                             (
                                 BaseWeightsModifier.profile eq profile and
                                     (BaseWeightsModifier.cycle eq cycle)
                             )
-                    }
-                    .firstOrNull()
+                    }.firstOrNull()
             }
 
         if (mod == null) {
@@ -169,7 +187,13 @@ fun Route.getBaseWeightsModifierV1() {
 
 fun Route.putBaseWeightsModifierV1() {
     put("/base-weights/modifier") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@put
@@ -186,13 +210,15 @@ fun Route.putBaseWeightsModifierV1() {
 
             val baseWeightsMod =
                 transaction {
-                    BaseWeightsModifier.selectAll().where {
-                        BaseWeightsModifier.email eq email and
-                            (
-                                BaseWeightsModifier.profile eq profile and
-                                    (BaseWeightsModifier.cycle eq baseWeightsModJson.cycle)
-                            )
-                    }.firstOrNull()
+                    BaseWeightsModifier
+                        .selectAll()
+                        .where {
+                            BaseWeightsModifier.email eq email and
+                                (
+                                    BaseWeightsModifier.profile eq profile and
+                                        (BaseWeightsModifier.cycle eq baseWeightsModJson.cycle)
+                                )
+                        }.firstOrNull()
                 }
 
             if (baseWeightsMod == null) {

@@ -26,7 +26,13 @@ fun Route.jokerRoutesV1(authConfig: String) {
 
 fun Route.getJokerV1() {
     get("/joker/{num}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -45,19 +51,21 @@ fun Route.getJokerV1() {
 
         val joker =
             transaction {
-                Joker.selectAll().where {
-                    Joker.email eq email and
-                        (
-                            Joker.profile eq profile and
-                                (
-                                    Joker.cycle eq cycle and
-                                        (
-                                            Joker.week eq week and
-                                                (Joker.day eq day and (Joker.num eq num))
-                                        )
-                                )
-                        )
-                }.firstOrNull()
+                Joker
+                    .selectAll()
+                    .where {
+                        Joker.email eq email and
+                            (
+                                Joker.profile eq profile and
+                                    (
+                                        Joker.cycle eq cycle and
+                                            (
+                                                Joker.week eq week and
+                                                    (Joker.day eq day and (Joker.num eq num))
+                                            )
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         if (joker == null) {
@@ -71,7 +79,13 @@ fun Route.getJokerV1() {
 
 fun Route.putJokerV1() {
     put("/joker/{num}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
 
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
@@ -91,22 +105,24 @@ fun Route.putJokerV1() {
 
         val joker =
             transaction {
-                Joker.selectAll().where {
-                    Joker.email eq email and
-                        (
-                            Joker.profile eq profile and
-                                (
-                                    Joker.cycle eq cycle and
-                                        (
-                                            Joker.week eq week and
-                                                (
-                                                    Joker.day eq day and
-                                                        (Joker.num eq num)
-                                                )
-                                        )
-                                )
-                        )
-                }.firstOrNull()
+                Joker
+                    .selectAll()
+                    .where {
+                        Joker.email eq email and
+                            (
+                                Joker.profile eq profile and
+                                    (
+                                        Joker.cycle eq cycle and
+                                            (
+                                                Joker.week eq week and
+                                                    (
+                                                        Joker.day eq day and
+                                                            (Joker.num eq num)
+                                                    )
+                                            )
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         if (joker == null) {

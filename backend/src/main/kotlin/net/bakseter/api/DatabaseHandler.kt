@@ -28,8 +28,8 @@ class DatabaseHandler(
 ) {
     private val maxPoolSize = 7
 
-    private fun dataSource(): HikariDataSource {
-        return HikariDataSource(
+    private fun dataSource(): HikariDataSource =
+        HikariDataSource(
             HikariConfig().apply {
                 jdbcUrl = dbUrl
                 username = dbUsername
@@ -39,11 +39,15 @@ class DatabaseHandler(
                 maximumPoolSize = maxPoolSize
             },
         )
-    }
 
     private val flyway: Flyway =
-        Flyway.configure().baselineOnMigrate(true).baselineVersion("6").cleanDisabled(false)
-            .dataSource(dbUrl, dbUsername, dbPassword).load()
+        Flyway
+            .configure()
+            .baselineOnMigrate(true)
+            .baselineVersion("6")
+            .cleanDisabled(false)
+            .dataSource(dbUrl, dbUsername, dbPassword)
+            .load()
 
     private val conn by lazy {
         Database.connect(dataSource())

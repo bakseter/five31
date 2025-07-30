@@ -15,8 +15,8 @@ plugins {
     application
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.serialization") version "1.9.25"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    id("com.gradleup.shadow") version "8.3.8"
+    id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
     id("com.adarshr.test-logger") version "4.0.0"
 }
 

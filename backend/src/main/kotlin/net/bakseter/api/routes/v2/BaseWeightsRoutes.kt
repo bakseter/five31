@@ -31,7 +31,13 @@ fun Route.baseWeightsRoutesV2(authConfig: String) {
 
 fun Route.getBaseWeightsV2() {
     get("/base-weights") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -67,7 +73,13 @@ fun Route.getBaseWeightsV2() {
 
 fun Route.putBaseWeightsV2() {
     put("/base-weights") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
 
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
@@ -123,7 +135,13 @@ fun Route.putBaseWeightsV2() {
 
 fun Route.getBaseWeightsModifierV2() {
     get("/base-weights/modifier/{cycle}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -139,13 +157,15 @@ fun Route.getBaseWeightsModifierV2() {
 
         val mod =
             transaction {
-                BaseWeightsModifier.selectAll().where {
-                    BaseWeightsModifier.email eq email and
-                        (
-                            BaseWeightsModifier.profile eq profile and
-                                (BaseWeightsModifier.cycle eq cycle)
-                        )
-                }.firstOrNull()
+                BaseWeightsModifier
+                    .selectAll()
+                    .where {
+                        BaseWeightsModifier.email eq email and
+                            (
+                                BaseWeightsModifier.profile eq profile and
+                                    (BaseWeightsModifier.cycle eq cycle)
+                            )
+                    }.firstOrNull()
             }
 
         if (mod == null) {
@@ -167,7 +187,13 @@ fun Route.getBaseWeightsModifierV2() {
 
 fun Route.putBaseWeightsModifierV2() {
     put("/base-weights/modifier") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@put
@@ -184,13 +210,15 @@ fun Route.putBaseWeightsModifierV2() {
 
             val baseWeightsMod =
                 transaction {
-                    BaseWeightsModifier.selectAll().where {
-                        BaseWeightsModifier.email eq email and
-                            (
-                                BaseWeightsModifier.profile eq profile and
-                                    (BaseWeightsModifier.cycle eq baseWeightsModJson.cycle)
-                            )
-                    }.firstOrNull()
+                    BaseWeightsModifier
+                        .selectAll()
+                        .where {
+                            BaseWeightsModifier.email eq email and
+                                (
+                                    BaseWeightsModifier.profile eq profile and
+                                        (BaseWeightsModifier.cycle eq baseWeightsModJson.cycle)
+                                )
+                        }.firstOrNull()
                 }
 
             if (baseWeightsMod == null) {

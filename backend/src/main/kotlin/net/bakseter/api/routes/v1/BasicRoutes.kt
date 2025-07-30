@@ -43,7 +43,8 @@ fun Route.getTokenV1(
         }
 
         val token =
-            JWT.create()
+            JWT
+                .create()
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("email", email)

@@ -28,7 +28,13 @@ fun Route.jokerRoutesV2(authConfig: String) {
 
 fun Route.getJokerV2() {
     get("/joker/{num}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -47,22 +53,24 @@ fun Route.getJokerV2() {
 
         val joker =
             transaction {
-                Joker.selectAll().where {
-                    Joker.email eq email and
-                        (
-                            Joker.profile eq profile and
-                                (
-                                    Joker.cycle eq cycle and
-                                        (
-                                            Joker.week eq week and
-                                                (
-                                                    Joker.day eq day and
-                                                        (Joker.num eq num)
-                                                )
-                                        )
-                                )
-                        )
-                }.firstOrNull()
+                Joker
+                    .selectAll()
+                    .where {
+                        Joker.email eq email and
+                            (
+                                Joker.profile eq profile and
+                                    (
+                                        Joker.cycle eq cycle and
+                                            (
+                                                Joker.week eq week and
+                                                    (
+                                                        Joker.day eq day and
+                                                            (Joker.num eq num)
+                                                    )
+                                            )
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         if (joker == null) {
@@ -76,7 +84,13 @@ fun Route.getJokerV2() {
 
 fun Route.putJokerV2() {
     put("/joker/{num}") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
 
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
@@ -96,22 +110,24 @@ fun Route.putJokerV2() {
 
         val joker =
             transaction {
-                Joker.selectAll().where {
-                    Joker.email eq email and
-                        (
-                            Joker.profile eq profile and
-                                (
-                                    Joker.cycle eq cycle and
-                                        (
-                                            Joker.week eq week and
-                                                (
-                                                    Joker.day eq day and
-                                                        (Joker.num eq num)
-                                                )
-                                        )
-                                )
-                        )
-                }.firstOrNull()
+                Joker
+                    .selectAll()
+                    .where {
+                        Joker.email eq email and
+                            (
+                                Joker.profile eq profile and
+                                    (
+                                        Joker.cycle eq cycle and
+                                            (
+                                                Joker.week eq week and
+                                                    (
+                                                        Joker.day eq day and
+                                                            (Joker.num eq num)
+                                                    )
+                                            )
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         if (joker == null) {
@@ -155,7 +171,13 @@ fun Route.putJokerV2() {
 
 fun Route.getJokerAmountV2() {
     get("/joker/count") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -173,19 +195,21 @@ fun Route.getJokerAmountV2() {
 
         val count =
             transaction {
-                Joker.selectAll().where {
-                    Joker.email eq email and
-                        (
-                            Joker.profile eq profile and
-                                (
-                                    Joker.cycle eq cycle and
-                                        (
-                                            Joker.week eq week and
-                                                (Joker.day eq day)
-                                        )
-                                )
-                        )
-                }.count()
+                Joker
+                    .selectAll()
+                    .where {
+                        Joker.email eq email and
+                            (
+                                Joker.profile eq profile and
+                                    (
+                                        Joker.cycle eq cycle and
+                                            (
+                                                Joker.week eq week and
+                                                    (Joker.day eq day)
+                                            )
+                                    )
+                            )
+                    }.count()
             }.toInt()
 
         call.respond(HttpStatusCode.OK, JokerCount(count))

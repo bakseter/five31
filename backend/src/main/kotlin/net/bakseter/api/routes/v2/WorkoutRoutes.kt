@@ -33,7 +33,13 @@ fun Route.workoutRoutesV2(authConfig: String) {
 
 fun Route.getWorkoutV2() {
     get("/workout") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -51,19 +57,21 @@ fun Route.getWorkoutV2() {
 
         val workout =
             transaction {
-                Workout.selectAll().where {
-                    Workout.email eq email and
-                        (
-                            Workout.profile eq profile and
-                                (
-                                    Workout.cycle eq cycle and
-                                        (
-                                            Workout.week eq week and
-                                                (Workout.day eq day)
-                                        )
-                                )
-                        )
-                }.firstOrNull()
+                Workout
+                    .selectAll()
+                    .where {
+                        Workout.email eq email and
+                            (
+                                Workout.profile eq profile and
+                                    (
+                                        Workout.cycle eq cycle and
+                                            (
+                                                Workout.week eq week and
+                                                    (Workout.day eq day)
+                                            )
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         if (workout == null) {
@@ -85,7 +93,13 @@ fun Route.getWorkoutV2() {
 
 fun Route.putWorkoutV2() {
     put("/workout") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@put
@@ -102,16 +116,18 @@ fun Route.putWorkoutV2() {
 
             val workout =
                 transaction {
-                    Workout.selectAll().where {
-                        Workout.cycle eq workoutJson.cycle and
-                            (
-                                Workout.profile eq profile and
-                                    (
-                                        Workout.week eq workoutJson.week and
-                                            (Workout.day eq workoutJson.day)
-                                    )
-                            )
-                    }.firstOrNull()
+                    Workout
+                        .selectAll()
+                        .where {
+                            Workout.cycle eq workoutJson.cycle and
+                                (
+                                    Workout.profile eq profile and
+                                        (
+                                            Workout.week eq workoutJson.week and
+                                                (Workout.day eq workoutJson.day)
+                                        )
+                                )
+                        }.firstOrNull()
                 }
 
             if (workout == null) {
@@ -155,7 +171,13 @@ fun Route.putWorkoutV2() {
 
 fun Route.putDateV2() {
     put("/workout/date") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@put
@@ -176,19 +198,21 @@ fun Route.putDateV2() {
 
             val workout =
                 transaction {
-                    Workout.selectAll().where {
-                        Workout.email eq email and
-                            (
-                                Workout.profile eq profile and
-                                    (
-                                        Workout.cycle eq cycle and
-                                            (
-                                                Workout.week eq week and
-                                                    (Workout.day eq day)
-                                            )
-                                    )
-                            )
-                    }.firstOrNull()
+                    Workout
+                        .selectAll()
+                        .where {
+                            Workout.email eq email and
+                                (
+                                    Workout.profile eq profile and
+                                        (
+                                            Workout.cycle eq cycle and
+                                                (
+                                                    Workout.week eq week and
+                                                        (Workout.day eq day)
+                                                )
+                                        )
+                                )
+                        }.firstOrNull()
                 }
 
             if (workout == null) {
@@ -235,7 +259,13 @@ fun Route.putDateV2() {
 
 fun Route.getDateV2() {
     get("/workout/date") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -253,16 +283,18 @@ fun Route.getDateV2() {
 
         val workout =
             transaction {
-                Workout.selectAll().where {
-                    Workout.email eq email and
-                        (
-                            Workout.profile eq profile and
-                                (
-                                    Workout.cycle eq cycle and
-                                        (Workout.week eq week and (Workout.day eq day))
-                                )
-                        )
-                }.firstOrNull()
+                Workout
+                    .selectAll()
+                    .where {
+                        Workout.email eq email and
+                            (
+                                Workout.profile eq profile and
+                                    (
+                                        Workout.cycle eq cycle and
+                                            (Workout.week eq week and (Workout.day eq day))
+                                    )
+                            )
+                    }.firstOrNull()
             }
 
         val date = workout?.get(Workout.date)
@@ -281,7 +313,13 @@ fun Route.getDateV2() {
 
 fun Route.getWorkoutCountV2() {
     get("/workout/count") {
-        val email = call.principal<JWTPrincipal>()?.payload?.getClaim("email")?.asString()?.lowercase()
+        val email =
+            call
+                .principal<JWTPrincipal>()
+                ?.payload
+                ?.getClaim("email")
+                ?.asString()
+                ?.lowercase()
         if (email == null) {
             call.respond(HttpStatusCode.Unauthorized)
             return@get
@@ -295,7 +333,11 @@ fun Route.getWorkoutCountV2() {
 
         val count =
             transaction {
-                Workout.selectAll().where { Workout.email eq email and (Workout.profile eq profile) }.count().toInt()
+                Workout
+                    .selectAll()
+                    .where { Workout.email eq email and (Workout.profile eq profile) }
+                    .count()
+                    .toInt()
             }
 
         call.respond(

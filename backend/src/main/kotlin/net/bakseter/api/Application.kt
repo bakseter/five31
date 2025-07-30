@@ -17,8 +17,16 @@ fun Application.module() {
     val databaseUsername = environment.config.property("ktor.databaseUsername").getString()
     val databasePassword = environment.config.property("ktor.databasePassword").getString()
 
-    val migrateDb = environment.config.property("ktor.migrateDb").getString().toBooleanStrict()
-    val dev = environment.config.property("ktor.dev").getString().toBooleanStrict()
+    val migrateDb =
+        environment.config
+            .property("ktor.migrateDb")
+            .getString()
+            .toBooleanStrict()
+    val dev =
+        environment.config
+            .property("ktor.dev")
+            .getString()
+            .toBooleanStrict()
 
     val devSecret = environment.config.property("jwt.devSecret").getString()
     val devAudience = environment.config.property("jwt.devAudience").getString()
