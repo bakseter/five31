@@ -1,24 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
+  "postUpdateOptions": ["gomodTidy", "gomodUpdateImportPaths"],
   "commitMessagePrefix": "⬆️",
   "prHourlyLimit": 0,
   "minimumReleaseAge": "3 days",
   "prCreation": "not-pending",
-  "ignoreDeps": [
-    "eclipse-temurin",
-    "postgres",
-    "node"
-  ],
+  "ignoreDeps": ["eclipse-temurin", "postgres", "node"],
   "updateInternalDeps": true,
   "rangeStrategy": "pin",
   "packageRules": [
     {
-      "matchDepTypes": [
-        "devDependencies"
-      ],
+      "matchDepTypes": ["devDependencies"],
       "automerge": true,
       "matchPackageNames": [
         "/@types/*/",
@@ -37,19 +30,13 @@
       ]
     },
     {
-      "matchDepTypes": [
-        "dependencies"
-      ],
+      "matchDepTypes": ["dependencies"],
       "automerge": true,
-      "matchPackageNames": [
-        "/@vercel/analytics/"
-      ]
+      "matchPackageNames": ["/@vercel/analytics/"]
     },
     {
       "groupName": "Kotlin packages",
-      "matchPackageNames": [
-        "/^org.jetbrains.kotlin.*/"
-      ]
+      "matchPackageNames": ["/^org.jetbrains.kotlin.*/"]
     }
   ]
 }
