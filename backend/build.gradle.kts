@@ -7,9 +7,6 @@ val postgresVersion: String by project
 val hikariVersion: String by project
 val flywayVersion: String by project
 
-// Needed for Shadow
-project.setProperty("mainClassName", "net.bakseter.api.ApplicationKt")
-
 plugins {
     application
     kotlin("jvm") version "2.2.0"
