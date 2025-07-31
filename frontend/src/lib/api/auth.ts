@@ -27,7 +27,7 @@ export const {
                       },
                       password: { label: 'Password', type: 'password' },
                   },
-                  // eslint-disable-next-line @typescript-eslint/require-await
+
                   async authorize() {
                       return {
                           id: '1',
@@ -56,7 +56,7 @@ export const {
 
             return token;
         },
-        // eslint-disable-next-line @typescript-eslint/require-await
+
         async session({ session, token }) {
             const { idToken } = token;
 
