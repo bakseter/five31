@@ -8,7 +8,7 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
-import java.net.URL
+import java.net.URI
 import java.util.concurrent.TimeUnit
 
 fun Application.configureAuthentication(
@@ -18,7 +18,7 @@ fun Application.configureAuthentication(
 ) {
     val jwkIssuer = "https://www.googleapis.com/oauth2/v3/certs"
     val jwkProvider =
-        JwkProviderBuilder(URL(jwkIssuer))
+        JwkProviderBuilder(URI(jwkIssuer).toURL())
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
             .build()
