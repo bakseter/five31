@@ -1,5 +1,4 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion: String by project
 val logbackVersion: String by project
@@ -13,8 +12,8 @@ project.setProperty("mainClassName", "net.bakseter.api.ApplicationKt")
 
 plugins {
     application
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.serialization") version "1.9.25"
+    kotlin("jvm") version "2.2.0"
+    kotlin("plugin.serialization") version "2.2.0"
     id("com.gradleup.shadow") version "8.3.8"
     id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
     id("com.adarshr.test-logger") version "4.0.0"
@@ -99,8 +98,6 @@ java {
 }
 
 // Set JVM target for Kotlin.
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "21"
-    }
+kotlin {
+    jvmToolchain(21)
 }
