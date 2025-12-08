@@ -5,7 +5,7 @@ inputs:
   node-version:
     required: false
     type: 'string'
-    default: '20'
+    default: '24'
   pnpm-version:
     required: false
     type: 'string'
