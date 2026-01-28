@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: five31
+  annotations:
+    keel.sh/match-tag: 'true'
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/bakseter/five31/frontend:latest
+          env:
+            - name: NEXT_PUBLIC_ENVIRONMENT
+              value: production
+            - name: NEXT_PUBLIC_BACKEND_URL
+              value: https://five31.tail79d70a.ts.net/api
+            - name: NEXT_PUBLIC_BACKEND_API_VERSION
+              value: v2
+            - name: NEXTAUTH_URL
+              value: https://five31.tail79d70a.ts.net
+          envFrom:
+            - secretRef:
+                name: frontend-secret
+          ports:
+            - name: http
+              containerPort: 3000
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 65534
+        runAsUser: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups:
+          - 65534
