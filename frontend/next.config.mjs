@@ -8,4 +8,5 @@ const withPWA = withPWAInit({
 export default withPWA({
     reactStrictMode: true,
     output: 'standalone',
+    turbopack: {},
 });
