@@ -21,16 +21,18 @@ spec:
         - name: backend
           image: ghcr.io/bakseter/five31/backend:latest
           env:
+            - name: DATABASE_URL
+              value: jdbc:postgresql://database-rw.five31.svc.cluster.local:5432/app
             - name: DATABASE_USERNAME
               valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_USER
-                  name: database-config
+                secretKeyRef:
+                  name: mandagsmiddag-database-app
+                  key: username
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: POSTGRES_PASSWORD
-                  name: database-secret
+                  name: mandagsmiddag-database-app
+                  key: password
           ports:
             - name: http
               containerPort: 8080
