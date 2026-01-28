@@ -26,12 +26,12 @@ spec:
             - name: DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mandagsmiddag-database-app
+                  name: database-app
                   key: username
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mandagsmiddag-database-app
+                  name: database-app
                   key: password
           ports:
             - name: http
