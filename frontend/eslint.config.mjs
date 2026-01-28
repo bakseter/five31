@@ -15,16 +15,15 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-    globalIgnores(
-        [
-            '**/node_modules/',
-            '**/public/',
-            '**/.next/',
-            'tailwind.config.js',
-            'postcss.config.js',
-            'eslint.config.mjs',
-            'vitest.config.mts',
-        ]),
+    globalIgnores([
+        '**/node_modules/',
+        '**/public/',
+        '**/.next/',
+        'tailwind.config.js',
+        'postcss.config.js',
+        'eslint.config.mjs',
+        'vitest.config.mts',
+    ]),
     {
         extends: fixupConfigRules(
             compat.extends(
