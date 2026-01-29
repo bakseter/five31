@@ -40,9 +40,10 @@ spec:
             - port: '5432'
               protocol: TCP
 
-    # Allow egress to Google OIDC provider
-    - toFQDNs:
-        - matchName: googleapis.com
+    # Allow egress to world
+    - toEndpoints:
+        - matchLabels:
+            reserved: world
       toPorts:
         - ports:
             - port: '443'
