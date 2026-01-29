@@ -39,3 +39,11 @@ spec:
         - ports:
             - port: '5432'
               protocol: TCP
+
+    # Allow egress to Google OIDC provider
+    - toFQDNs:
+        - matchName: googleapis.com/oauth2/v3/certs
+      toPorts:
+        - ports:
+            - port: '443'
+              protocol: TCP
