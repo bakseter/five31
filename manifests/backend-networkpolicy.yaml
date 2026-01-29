@@ -40,7 +40,7 @@ spec:
             - port: '5432'
               protocol: TCP
 
-    # Allow egress to world
+    # Allow egress to Google SSO
     - toEntities:
         - world
       toPorts:
@@ -48,9 +48,6 @@ spec:
             - port: '443'
               protocol: TCP
           rules:
-            http:
-              - method: GET
-              - method: POST
-              - method: PUT
-              - method: DELETE
-              - method: PATCH
+            dns:
+              - matchName: 'accounts.google.com'
+              - matchPattern: '*googleapis.com'
