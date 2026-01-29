@@ -24,7 +24,7 @@ spec:
             - name: NEXT_PUBLIC_ENVIRONMENT
               value: production
             - name: NEXT_PUBLIC_BACKEND_URL
-              value: https://five31-api.tail79d70a.ts.net
+              value: http://backend.five31.svc.cluster.local
             - name: NEXT_PUBLIC_BACKEND_API_VERSION
               value: v2
             - name: NEXTAUTH_URL
