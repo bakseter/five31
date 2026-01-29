@@ -43,7 +43,3 @@ spec:
     # Allow egress to world
     - toEntities:
         - world
-      toPorts:
-        - rules:
-            http:
-              - {}
