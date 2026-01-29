@@ -41,13 +41,9 @@ spec:
               protocol: TCP
 
     # Allow egress to world
-    - toEndpoints:
-        - matchLabels:
-            reserved: world
+    - toEntities:
+        - world
       toPorts:
-        - ports:
-            - port: '443'
-              protocol: TCP
-          rules:
+        - rules:
             http:
               - {}
