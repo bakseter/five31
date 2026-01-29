@@ -40,14 +40,10 @@ spec:
             - port: '5432'
               protocol: TCP
 
-    # Allow egress to Google SSO
+    # Allow egress to world for Google SSO
     - toEntities:
         - world
       toPorts:
         - ports:
             - port: '443'
               protocol: TCP
-          rules:
-            dns:
-              - matchName: 'accounts.google.com'
-              - matchPattern: '*googleapis.com'
