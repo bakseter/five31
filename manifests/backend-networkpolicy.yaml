@@ -43,3 +43,7 @@ spec:
     # Allow egress to world
     - toEntities:
         - world
+      toPorts:
+        - ports:
+            - port: '443'
+              protocol: TCP
