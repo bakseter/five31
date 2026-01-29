@@ -41,3 +41,11 @@ spec:
         - ports:
             - port: '8080'
               protocol: TCP
+
+    # Allow egress to world for Google SSO
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: '443'
+              protocol: TCP
