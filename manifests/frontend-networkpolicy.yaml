@@ -13,8 +13,8 @@ spec:
     - fromEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: tailscale
-            tailscale.com/parent-resorce: frontend
-            tailscale.com/parent-resorce-ns: five31
+            tailscale.com/parent-resource: frontend
+            tailscale.com/parent-resource-ns: five31
       toPorts:
         - ports:
             - port: '3000'
