@@ -47,3 +47,10 @@ spec:
         - ports:
             - port: '443'
               protocol: TCP
+          rules:
+            http:
+              - method: GET
+              - method: POST
+              - method: PUT
+              - method: DELETE
+              - method: PATCH
