@@ -1,0 +1,31 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: database
+  namespace: five31
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: database
+
+  ingress:
+    # Allow ingress from CNPG operator
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: cnpg-system
+            app.kubernetes.io/name: cloudnative-pg
+      toPorts:
+        - ports:
+            - port: '8000'
+              protocol: TCP
+            - port: '5432'
+              protocol: TCP
+
+    # Allow ingress from backend
+    - fromEndpoints:
+        - matchLabels:
+            app: backend
+      toPorts:
+        - ports:
+            - port: '5432'
+              protocol: TCP

@@ -1,0 +1,41 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: backend
+  namespace: five31
+spec:
+  endpointSelector:
+    matchLabels:
+      app: backend
+
+  ingress:
+    # Allow ingress from frontend
+    - fromEndpoints:
+        - matchLabels:
+            app: frontend
+      toPorts:
+        - ports:
+            - port: '8080'
+              protocol: TCP
+
+  egress:
+    # Allow egress to kube-dns (needed for DNS resolution)
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: '53'
+              protocol: TCP
+            - port: '53'
+              protocol: UDP
+
+    # Allow egress to database
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: database
+      toPorts:
+        - ports:
+            - port: '5432'
+              protocol: TCP
