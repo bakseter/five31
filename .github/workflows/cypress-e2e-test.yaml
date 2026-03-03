@@ -81,7 +81,7 @@ jobs:
           NEXTAUTH_SECRET: 'very-secret-string-123'
 
       - name: Upload Cypress screenshots (only on failure)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: 'cypress-screenshots'
