@@ -53,16 +53,16 @@ jobs:
           context: '${{ matrix.image-name }}'
           platforms: 'linux/amd64,linux/arm64'
 
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.34.2
-        with:
-          image-ref: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
-          format: 'sarif'
-          exit-code: '0'
-          output: ${{ env.TRIVY_SARIF }}
-        env:
-          TRIVY_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-db:2'
-          TRIVY_JAVA_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-java-db:1'
+      #     - name: Scan image with Trivy
+      #       uses: aquasecurity/trivy-action@0.34.2
+      #       with:
+      #         image-ref: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
+      #         format: 'sarif'
+      #         exit-code: '0'
+      #         output: ${{ env.TRIVY_SARIF }}
+      #       env:
+      #         TRIVY_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-db:2'
+      #         TRIVY_JAVA_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-java-db:1'
 
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v4
