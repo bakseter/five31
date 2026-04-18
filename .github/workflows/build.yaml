@@ -12,6 +12,9 @@ jobs:
   build:
     name: 'Build ${{ matrix.image-name }}'
     runs-on: ubuntu-latest
+    concurrency:
+      group: '${{ github.workflow }}-${{ github.ref }}-${{ matrix.image-name }}'
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:

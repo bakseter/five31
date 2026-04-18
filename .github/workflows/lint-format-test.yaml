@@ -8,6 +8,9 @@ jobs:
   lint-format-test:
     name: 'Lint, format & test'
     runs-on: ubuntu-latest
+    concurrency:
+      group: '${{ github.workflow }}-${{ github.ref }}'
+      cancel-in-progress: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -22,9 +25,9 @@ jobs:
         working-directory: frontend
 
       - name: Run prettier check
-        run: pnpm prettier -w "../**/*.{ts,tsx,js,jsx,mjs,css,json,md,yaml,yml}"
+        run: pnpm pcheck
         working-directory: frontend
 
       - name: Run tests
-        run: pnpm vitest run
+        run: pnpm test
         working-directory: frontend
