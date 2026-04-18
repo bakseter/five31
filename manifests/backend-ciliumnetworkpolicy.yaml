@@ -1,23 +1,21 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: frontend
+  name: backend
   namespace: five31
 spec:
   endpointSelector:
     matchLabels:
-      app: frontend
+      app: backend
 
   ingress:
-    # Allow ingress from Tailscale
+    # Allow ingress from frontend
     - fromEndpoints:
         - matchLabels:
-            k8s:io.kubernetes.pod.namespace: tailscale
-            tailscale.com/parent-resource: frontend
-            tailscale.com/parent-resource-ns: five31
+            app: frontend
       toPorts:
         - ports:
-            - port: '3000'
+            - port: '8080'
               protocol: TCP
 
   egress:
@@ -34,18 +32,18 @@ spec:
             dns:
               - matchPattern: '*'
 
-    # Allow egress to backend
+    # Allow egress to database
     - toEndpoints:
         - matchLabels:
-            app: backend
+            cnpg.io/cluster: database
       toPorts:
         - ports:
-            - port: '8080'
+            - port: '5432'
               protocol: TCP
 
-    # Allow egress to world for Google SSO
-    - toEntities:
-        - world
+    # Allow egress to Google SSO
+    - toFQDNs:
+        - matchName: 'www.googleapis.com'
       toPorts:
         - ports:
             - port: '443'
