@@ -28,4 +28,4 @@ const profileDecoder = (value: unknown) => {
 };
 type Profile = decodeType<typeof profileDecoder>;
 
-export { type Day, dayDecoder, type Profile,profileDecoder, type Week, weekDecoder, type Workout, workoutDecoder };
+export { type Day, dayDecoder, type Profile, profileDecoder, type Week, weekDecoder, type Workout, workoutDecoder };
