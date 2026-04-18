@@ -1,20 +1,12 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import { fixupConfigRules } from '@eslint/compat';
-import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
 import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
-
-const compat = new FlatCompat({
-    baseDirectory: import.meta.dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
+import nextVitals from 'eslint-config-next/core-web-vitals';
 
 export default defineConfig([
+    ...nextVitals,
     globalIgnores([
         '**/node_modules/',
         '**/public/',
@@ -25,31 +17,33 @@ export default defineConfig([
         'vitest.config.mts',
     ]),
     {
-        extends: fixupConfigRules(
-            compat.extends(
-                'prettier',
-                'plugin:import/recommended',
-                'plugin:import/typescript',
-                'next/core-web-vitals',
-                'next/typescript',
-            ),
-        ),
-
+        // https://github.com/vercel/next.js/issues/89764#issuecomment-3928272828
+        settings: {
+            react: { version: '19' },
+        },
+        extends: [
+            js.configs.all,
+            tseslint.configs.strictTypeChecked,
+            {
+                languageOptions: {
+                    parserOptions: {
+                        projectService: true,
+                    },
+                },
+            },
+            tseslint.configs.stylisticTypeChecked,
+        ],
         plugins: {
             prettierRecommended: eslintPluginPrettierRecommended,
             unicorn: eslintPluginUnicorn,
             tsRecommendedTypeChecked: tseslint.configs.recommendedTypeChecked,
         },
 
-        languageOptions: {
-            globals: globals.builtin,
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
-
         rules: {
+            'no-ternary': 'off',
+            'one-var': 'off',
+            curly: 'off',
+            'no-magic-numbers': 'off',
             'no-console': 'error',
             'linebreak-style': 'off',
             camelcase: 'error',
