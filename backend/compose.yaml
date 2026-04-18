@@ -19,7 +19,7 @@ services:
       MIGRATE_DB:
 
   database:
-    image: postgres:15.7-alpine
+    image: postgres:18-alpine
     restart: always
     ports:
       - '5432:5432'

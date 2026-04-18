@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
-import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
+import Google from 'next-auth/providers/google';
+
 import { backendUrl } from '@/utils/constants';
 
 const isProd = (process.env.NEXT_PUBLIC_ENVIRONMENT ?? 'development') === 'production';
@@ -28,6 +29,7 @@ export const {
                       password: { label: 'Password', type: 'password' },
                   },
 
+                  // eslint-disable-next-line @typescript-eslint/require-await
                   async authorize() {
                       return {
                           id: '1',
@@ -57,6 +59,7 @@ export const {
             return token;
         },
 
+        // eslint-disable-next-line @typescript-eslint/require-await
         async session({ session, token }) {
             const { idToken } = token;
 

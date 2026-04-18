@@ -1,8 +1,9 @@
 'use client';
 
 import { useId } from 'react';
-import { exerciseToText } from '@/utils/helpers';
+
 import type { CompExercise } from '@/schema/base-weights';
+import { exerciseToText } from '@/utils/helpers';
 
 interface BaseWeightsFormInputProps {
     comp: CompExercise;

@@ -2,8 +2,9 @@
 
 import { formatISO } from 'date-fns';
 import { date as dateDecoder, record } from 'typescript-json-decoder';
-import type { Day, Week } from '@/schema/workout';
+
 import { auth } from '@/api/auth';
+import type { Day, Week } from '@/schema/workout';
 import { backendUrl } from '@/utils/constants';
 
 const profile = 1;
@@ -23,7 +24,7 @@ const setDate = async ({
     if (!session?.idToken) throw new Error('no session');
 
     const { status } = await fetch(
-        `${backendUrl}/workout/date?profile=${profile}&cycle=${cycle}&week=${week}&day=${day}`,
+        `${backendUrl}/workout/date?profile=${String(profile)}&cycle=${String(cycle)}&week=${String(week)}&day=${String(day)}`,
         {
             method: 'PUT',
             headers: {
@@ -34,7 +35,7 @@ const setDate = async ({
         },
     );
 
-    if (status !== 200 && status !== 202) throw new Error(`something went wrong: ${status}`);
+    if (status !== 200 && status !== 202) throw new Error(`something went wrong: ${String(status)}`);
 };
 
 // Have to return date inside an object for some reason??? crashes with pure Date object event though React docs says otherwise:
@@ -52,7 +53,7 @@ const getDate = async ({
     if (!session?.idToken) throw new Error('no session');
 
     const response = await fetch(
-        `${backendUrl}/workout/date?profile=${profile}&cycle=${cycle}&week=${week}&day=${day}`,
+        `${backendUrl}/workout/date?profile=${String(profile)}&cycle=${String(cycle)}&week=${String(week)}&day=${String(day)}`,
         {
             headers: { Authorization: `Bearer ${session.idToken}` },
         },
@@ -62,6 +63,8 @@ const getDate = async ({
         const json = await response.json();
         return record({ date: dateDecoder })(json);
     }
+
+    return undefined;
 };
 
-export { setDate, getDate };
+export { getDate, setDate };

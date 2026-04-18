@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
+
 import { getJoker, setJoker } from '@/actions/joker';
-import type { Day, Week } from '@/schema/workout';
 import Spinner from '@/components/client/spinner';
+import type { Day, Week } from '@/schema/workout';
 
 interface Props {
     cycle: number;
@@ -14,21 +15,18 @@ interface Props {
 
 const JokerInput = ({ cycle, week, day, num }: Props) => {
     const id = useId();
-
     const [checked, setChecked] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        const fetchReps = async () => {
+        const fetchJoker = async () => {
             setLoading(true);
             const joker = await getJoker({ cycle, week, day, num });
             setLoading(false);
-
             if (!joker) return;
-
             setChecked(true);
         };
-        void fetchReps();
+        void fetchJoker();
     }, [cycle, day, week, num]);
 
     const handleOnChange = async () => {
@@ -39,12 +37,18 @@ const JokerInput = ({ cycle, week, day, num }: Props) => {
     };
 
     return (
-        <div className="grid grid-cols-2">
-            <input type="checkbox" id={id} className="rounded w-4 h-4" checked={checked} onChange={handleOnChange} />
-            <label hidden htmlFor={id}>
+        <div className="flex items-center gap-2">
+            <label htmlFor={id} className="sr-only">
                 Joker {num}
             </label>
-            <div>{loading && <Spinner size="xs" />}</div>
+            <input
+                type="checkbox"
+                id={id}
+                checked={checked}
+                onChange={handleOnChange}
+                className="h-4 w-4 rounded border-slate-300 text-slate-700 accent-slate-700 transition-colors"
+            />
+            {loading && <Spinner size="xs" />}
         </div>
     );
 };

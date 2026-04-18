@@ -11,7 +11,7 @@ const CycleEditPage = async (props: Props) => {
     const params = await props.params;
     const currentCycle = intCoerciveDecoder(params.cycle);
 
-    if (!currentCycle) throw new Error("Invalid cycle '${currentCycle}'");
+    if (!currentCycle) throw new Error(`Invalid cycle '${String(currentCycle)}'`);
 
     return <BaseWeightsModifierForm cycle={currentCycle} />;
 };

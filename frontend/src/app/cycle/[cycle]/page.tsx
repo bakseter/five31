@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import MenuLink from '@/components/server/menu-link';
 import { weeks } from '@/utils/constants';
 
@@ -26,8 +27,8 @@ const CyclePage = async (props: Props) => {
                 {weeks.map((week) => (
                     <MenuLink
                         className="bg-sky-500 rounded-md p-4 m-4"
-                        key={`page-link-week-${week}`}
-                        href={`/cycle/${cycle}/week/${week}`}
+                        key={`page-link-week-${String(week)}`}
+                        href={`/cycle/${cycle}/week/${String(week)}`}
                     >
                         Week {week}
                     </MenuLink>

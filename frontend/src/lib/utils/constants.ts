@@ -9,4 +9,4 @@ const backendUrlWithApi = `${backendUrl}/${backendApiVersion}`;
 const warmupCutoff = 2;
 const jokerCutoff = 5;
 
-export { cycles, weeks, days, backendUrlWithApi as backendUrl, warmupCutoff, jokerCutoff };
+export { backendUrlWithApi as backendUrl, cycles, days, jokerCutoff,warmupCutoff, weeks };

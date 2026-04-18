@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+
 import { getBaseWeights } from '@/actions/base-weights';
 import { getWorkoutCount } from '@/actions/workout';
 import { auth } from '@/api/auth';
@@ -19,7 +20,7 @@ const IndexPage = async () => {
     const cycle = Math.floor(count / 12) + 1;
     const week = Math.floor((count % 12) / 4) + 1;
 
-    redirect(`/cycle/${cycle}/week/${week}`);
+    return redirect(`/cycle/${String(cycle)}/week/${String(week)}`);
 };
 
 export default IndexPage;

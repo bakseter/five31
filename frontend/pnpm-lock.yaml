@@ -82,6 +82,9 @@ importers:
       eslint-plugin-prettier:
         specifier: 5.5.5
         version: 5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@10.2.1(jiti@2.6.1)))(eslint@10.2.1(jiti@2.6.1))(prettier@3.8.3)
+      eslint-plugin-simple-import-sort:
+        specifier: 13.0.0
+        version: 13.0.0(eslint@10.2.1(jiti@2.6.1))
       eslint-plugin-unicorn:
         specifier: 64.0.0
         version: 64.0.0(eslint@10.2.1(jiti@2.6.1))
@@ -1909,6 +1912,11 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
+
+  eslint-plugin-simple-import-sort@13.0.0:
+    resolution: {integrity: sha512-McAc+/Nlvcg4byY/CABGH8kqnefWBj8s3JA2okEtz8ixbECQgU46p0HkTUKa4YS7wvgGceimlc34p1nXqbWqtA==}
+    peerDependencies:
+      eslint: '>=5.0.0'
 
   eslint-plugin-unicorn@64.0.0:
     resolution: {integrity: sha512-rNZwalHh8i0UfPlhNwg5BTUO1CMdKNmjqe+TgzOTZnpKoi8VBgsW7u9qCHIdpxEzZ1uwrJrPF0uRb7l//K38gA==}
@@ -5361,6 +5369,10 @@ snapshots:
       semver: 6.3.1
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
+
+  eslint-plugin-simple-import-sort@13.0.0(eslint@10.2.1(jiti@2.6.1)):
+    dependencies:
+      eslint: 10.2.1(jiti@2.6.1)
 
   eslint-plugin-unicorn@64.0.0(eslint@10.2.1(jiti@2.6.1)):
     dependencies:

@@ -1,8 +1,9 @@
 'use server';
 
 import { number, record } from 'typescript-json-decoder';
-import { type Day, type Week } from '@/schema/workout';
+
 import { auth } from '@/api/auth';
+import { type Day, type Week } from '@/schema/workout';
 import { backendUrl } from '@/utils/constants';
 
 const profile = 1;
@@ -22,7 +23,7 @@ const setJoker = async ({
     if (!session?.idToken) throw new Error('no session');
 
     const { status } = await fetch(
-        `${backendUrl}/joker/${num}?profile=${profile}&cycle=${cycle}&week=${week}&day=${day}`,
+        `${backendUrl}/joker/${String(num)}?profile=${String(profile)}&cycle=${String(cycle)}&week=${String(week)}&day=${String(day)}`,
         {
             method: 'PUT',
             headers: { Authorization: `Bearer ${session.idToken}` },
@@ -47,13 +48,15 @@ const getJoker = async ({
     if (!session?.idToken) throw new Error('no session');
 
     const { status } = await fetch(
-        `${backendUrl}/joker/${num}?profile=${profile}&cycle=${cycle}&week=${week}&day=${day}`,
+        `${backendUrl}/joker/${String(num)}?profile=${String(profile)}&cycle=${String(cycle)}&week=${String(week)}&day=${String(day)}`,
         {
             headers: { Authorization: `Bearer ${session.idToken}` },
         },
     );
 
     if (status === 200) return true;
+
+    return undefined;
 };
 
 const getJokerAmount = async ({
@@ -69,7 +72,7 @@ const getJokerAmount = async ({
     if (!session?.idToken) throw new Error('no session');
 
     const response = await fetch(
-        `${backendUrl}/joker/count?profile=${profile}&cycle=${cycle}&week=${week}&day=${day}`,
+        `${backendUrl}/joker/count?profile=${String(profile)}&cycle=${String(cycle)}&week=${String(week)}&day=${String(day)}`,
         {
             headers: { Authorization: `Bearer ${session.idToken}` },
         },
@@ -79,6 +82,8 @@ const getJokerAmount = async ({
         const json = await response.json();
         return record({ count: number })(json).count;
     }
+
+    return undefined;
 };
 
-export { setJoker, getJoker, getJokerAmount };
+export { getJoker, getJokerAmount, setJoker };

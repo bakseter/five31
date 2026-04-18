@@ -1,7 +1,9 @@
 import '@/styles/globals.css';
-import type { ReactNode } from 'react';
-import { Open_Sans, Roboto_Mono } from 'next/font/google'; // eslint-disable-line camelcase
+
 import type { Metadata, Viewport } from 'next';
+import { Open_Sans, Roboto_Mono } from 'next/font/google'; // eslint-disable-line camelcase
+import type { ReactNode } from 'react';
+
 import { auth } from '@/api/auth';
 import SessionProviderWrapper from '@/components/client/session-provider-wrapper';
 

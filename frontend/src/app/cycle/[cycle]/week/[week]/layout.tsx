@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import MenuLink from '@/components/server/menu-link';
 import { weeks } from '@/utils/constants';
 import { intCoerciveDecoder } from '@/utils/helpers';
@@ -29,12 +30,12 @@ const WeekLayout = async (props: WeekLayoutProps) => {
     return (
         <>
             <div className="grid grid-flow-col md:gap-1 lg:gap-2 xl:gap-4">
-                {weeks.map((week) => (
+                {weeks.map((week_) => (
                     <MenuLink
-                        href={`/cycle/${currentCycle}/week/${week}`}
-                        key={`link-week-${week}`}
-                        className={currentWeek === week ? 'bg-sky-500' : ''}
-                    >{`${weekPrefix} ${week}`}</MenuLink>
+                        href={`/cycle/${currentCycle}/week/${String(week_)}`}
+                        key={`link-week-${String(week_)}`}
+                        className={currentWeek === week_ ? 'bg-sky-500' : ''}
+                    >{`${weekPrefix} ${String(week_)}`}</MenuLink>
                 ))}
                 <MenuLink href={`/cycle/${currentCycle}/edit`}>📝</MenuLink>
             </div>

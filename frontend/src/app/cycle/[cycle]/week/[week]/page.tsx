@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import Workout from '@/components/server/workout';
 import { days } from '@/utils/constants';
 import { intCoerciveDecoder } from '@/utils/helpers';
@@ -25,7 +26,7 @@ const WeekPage = async (props: Props) => {
     if ((week !== 1 && week !== 2 && week !== 3) || !cycle) throw new Error('breh');
 
     return days.map((day) => (
-        <div className="mx-2" key={`workout-${day}-${week}-${cycle}`}>
+        <div className="mx-2" key={`workout-${String(day)}-${String(week)}-${String(cycle)}`}>
             <Workout cycle={cycle} week={week} day={day} />
         </div>
     ));

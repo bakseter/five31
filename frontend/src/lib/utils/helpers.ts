@@ -129,16 +129,16 @@ const calculateWeightFromPercentage = ({
     );
 
 export {
+    addToBaseWeights,
+    calculateWeightFromPercentage,
     dayToExercise,
     exerciseToText,
-    weekToBasePercentages,
-    weekToPercentages,
-    percentageToText,
-    weekToSetsReps,
-    addToBaseWeights,
-    weekToDefiningRep,
-    intCoerciveDecoder,
     floatCoerciveDecoder,
+    intCoerciveDecoder,
     jokerWeightsExtend,
-    calculateWeightFromPercentage,
+    percentageToText,
+    weekToBasePercentages,
+    weekToDefiningRep,
+    weekToPercentages,
+    weekToSetsReps,
 };

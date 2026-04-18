@@ -1,4 +1,5 @@
 import { type decodeType, number, record } from 'typescript-json-decoder';
+
 import { intCoerciveDecoder } from '@/utils/helpers';
 
 const weekDecoder = (value: unknown) => {
@@ -27,4 +28,4 @@ const profileDecoder = (value: unknown) => {
 };
 type Profile = decodeType<typeof profileDecoder>;
 
-export { weekDecoder, dayDecoder, workoutDecoder, profileDecoder, type Week, type Day, type Workout, type Profile };
+export { type Day, dayDecoder, type Profile,profileDecoder, type Week, weekDecoder, type Workout, workoutDecoder };

@@ -1,14 +1,14 @@
 'use server';
 
 import { auth } from '@/api/auth';
-import { backendUrl, cycles } from '@/utils/constants';
-import { addToBaseWeights } from '@/utils/helpers';
 import {
     type BaseWeights,
-    type BaseWeightsModifier,
     baseWeightsDecoder,
+    type BaseWeightsModifier,
     baseWeightsModifierDecoder,
 } from '@/schema/base-weights';
+import { backendUrl, cycles } from '@/utils/constants';
+import { addToBaseWeights } from '@/utils/helpers';
 
 const profile = 1;
 
@@ -16,7 +16,7 @@ const getBaseWeights = async (): Promise<BaseWeights | undefined> => {
     const session = await auth();
     if (!session?.idToken) throw new Error('no session');
 
-    const response = await fetch(`${backendUrl}/base-weights?profile=${profile}`, {
+    const response = await fetch(`${backendUrl}/base-weights?profile=${String(profile)}`, {
         headers: { Authorization: `Bearer ${session.idToken}` },
     });
 
@@ -25,13 +25,15 @@ const getBaseWeights = async (): Promise<BaseWeights | undefined> => {
 
         return baseWeightsDecoder(json);
     }
+
+    return undefined;
 };
 
 const putBaseWeights = async ({ baseWeights }: { baseWeights: BaseWeights }): Promise<void> => {
     const session = await auth();
     if (!session?.idToken) throw new Error('no session');
 
-    const { status } = await fetch(`${backendUrl}/base-weights?profile=${profile}`, {
+    const { status } = await fetch(`${backendUrl}/base-weights?profile=${String(profile)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.idToken}` },
         body: JSON.stringify(baseWeights),
@@ -44,7 +46,7 @@ const getBaseWeightsModifier = async ({ cycle }: { cycle: number }): Promise<Bas
     const session = await auth();
     if (!session?.idToken) throw new Error('no session');
 
-    const response = await fetch(`${backendUrl}/base-weights/modifier/${cycle}?profile=${profile}`, {
+    const response = await fetch(`${backendUrl}/base-weights/modifier/${String(cycle)}?profile=${String(profile)}`, {
         headers: { Authorization: `Bearer ${session.idToken}` },
     });
 
@@ -52,6 +54,8 @@ const getBaseWeightsModifier = async ({ cycle }: { cycle: number }): Promise<Bas
         const json = await response.json();
         return baseWeightsModifierDecoder(json);
     }
+
+    return undefined;
 };
 
 const putBaseWeightsModifier = async ({
@@ -62,7 +66,7 @@ const putBaseWeightsModifier = async ({
     const session = await auth();
     if (!session?.idToken) throw new Error('no session');
 
-    const { status } = await fetch(`${backendUrl}/base-weights/modifier?profile=${profile}`, {
+    const { status } = await fetch(`${backendUrl}/base-weights/modifier?profile=${String(profile)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.idToken}` },
         body: JSON.stringify(baseWeightsModifier),
@@ -75,9 +79,10 @@ const getBaseWeightsForCycle = async ({ cycle }: { cycle: number }): Promise<Bas
     const baseWeights = await getBaseWeights();
 
     const response = await Promise.all(
-        Array.from({ length: cycles.length }, (_, i) => i + 1).map((c) =>
+        // eslint-disable-next-line id-length
+        Array.from({ length: cycles.length }, (_, index) => index + 1).map((cycle_) =>
             getBaseWeightsModifier({
-                cycle: c,
+                cycle: cycle_,
             }),
         ),
     );
@@ -122,4 +127,4 @@ const getBaseWeightsForCycle = async ({ cycle }: { cycle: number }): Promise<Bas
     return addToBaseWeights(modCycleBaseWeightsToCycle, cycle);
 };
 
-export { getBaseWeights, putBaseWeights, getBaseWeightsModifier, putBaseWeightsModifier, getBaseWeightsForCycle };
+export { getBaseWeights, getBaseWeightsForCycle, getBaseWeightsModifier, putBaseWeights, putBaseWeightsModifier };

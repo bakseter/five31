@@ -1,5 +1,5 @@
-import type { decodeType } from 'typescript-json-decoder';
-import { intersection, number, record } from 'typescript-json-decoder';
+import { type decodeType, intersection, number, record } from 'typescript-json-decoder';
+
 import { floatCoerciveDecoder } from '@/utils/helpers';
 
 const baseWeightsDecoder = record({
@@ -18,10 +18,10 @@ const baseWeightsModifierDecoder = intersection(baseWeightsDecoder, record({ cyc
 type BaseWeightsModifier = decodeType<typeof baseWeightsModifierDecoder>;
 
 export {
-    baseWeightsDecoder,
     type BaseWeights,
+    baseWeightsDecoder,
+    type BaseWeightsModifier,
+    baseWeightsModifierDecoder,
     type CompExercise,
     comps,
-    baseWeightsModifierDecoder,
-    type BaseWeightsModifier,
 };

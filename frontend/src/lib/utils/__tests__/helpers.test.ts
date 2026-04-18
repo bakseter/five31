@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import type { BaseWeights } from '@/schema/base-weights';
 import {
     addToBaseWeights,

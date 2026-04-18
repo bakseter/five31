@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import MenuLink from '@/components/server/menu-link';
 import { cycles } from '@/utils/constants';
 import { intCoerciveDecoder } from '@/utils/helpers';
@@ -26,11 +27,11 @@ const CycleLayout = async (props: Props) => {
     return (
         <>
             <div className="grid grid-flow-col md:gap-1 lg:gap-2 xl:gap-4">
-                {cycles.map((cycle) => (
+                {cycles.map((cycle_) => (
                     <MenuLink
-                        href={`/cycle/${cycle}/week/1`}
-                        key={`link-cycle-${cycle}`}
-                        className={currentCycle === cycle ? 'bg-sky-500' : ''}
+                        href={`/cycle/${String(cycle_)}/week/1`}
+                        key={`link-cycle-${String(cycle_)}`}
+                        className={currentCycle === cycle_ ? 'bg-sky-500' : ''}
                     >{`${cyclePrefix} ${cycle}`}</MenuLink>
                 ))}
                 <MenuLink href="/profile">{profileHeader}</MenuLink>

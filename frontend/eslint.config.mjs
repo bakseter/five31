@@ -4,6 +4,7 @@ import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 import nextVitals from 'eslint-config-next/core-web-vitals';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default defineConfig([
     ...nextVitals,
@@ -37,13 +38,22 @@ export default defineConfig([
             prettierRecommended: eslintPluginPrettierRecommended,
             unicorn: eslintPluginUnicorn,
             tsRecommendedTypeChecked: tseslint.configs.recommendedTypeChecked,
+            'simple-import-sort': simpleImportSort,
         },
 
         rules: {
+            'max-lines-per-function': [
+                'error',
+                {
+                    max: 80,
+                },
+            ],
             'no-undefined': 'off',
+            'no-void': 'off',
             'no-ternary': 'off',
             'one-var': 'off',
             'sort-keys': 'off',
+            'no-inline-comments': 'off',
             'new-cap': 'off',
             curly: 'off',
             'no-magic-numbers': 'off',
@@ -69,6 +79,9 @@ export default defineConfig([
             'import/no-unresolved': 'error',
             'import/group-exports': 'error',
             'import/prefer-default-export': 'error',
+            'sort-imports': 'off',
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
 
             '@typescript-eslint/array-type': [
                 'error',
