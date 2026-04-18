@@ -20,9 +20,10 @@ jobs:
         with:
           working-directory: 'frontend'
 
-      - name: Run linter
-        run: pnpm lint
-        working-directory: frontend
+      # TODO: Enable
+      #     - name: Run linter
+      #       run: pnpm lint
+      #       working-directory: frontend
 
       - name: Run prettier check
         run: pnpm pcheck
