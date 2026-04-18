@@ -40,8 +40,11 @@ export default defineConfig([
         },
 
         rules: {
+            'no-undefined': 'off',
             'no-ternary': 'off',
             'one-var': 'off',
+            'sort-keys': 'off',
+            'new-cap': 'off',
             curly: 'off',
             'no-magic-numbers': 'off',
             'no-console': 'error',

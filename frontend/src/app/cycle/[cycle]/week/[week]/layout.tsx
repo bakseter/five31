@@ -33,7 +33,7 @@ const WeekLayout = async (props: WeekLayoutProps) => {
                     <MenuLink
                         href={`/cycle/${currentCycle}/week/${week}`}
                         key={`link-week-${week}`}
-                        className={`${currentWeek === week ? 'bg-sky-500' : ''}`}
+                        className={currentWeek === week ? 'bg-sky-500' : ''}
                     >{`${weekPrefix} ${week}`}</MenuLink>
                 ))}
                 <MenuLink href={`/cycle/${currentCycle}/edit`}>📝</MenuLink>

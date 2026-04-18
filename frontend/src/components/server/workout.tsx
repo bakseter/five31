@@ -1,9 +1,9 @@
 import { getJokerAmount } from '@/actions/joker';
 import { getBaseWeightsForCycle } from '@/actions/base-weights';
-import type { Week, Day } from '@/schema/workout';
+import type { Day, Week } from '@/schema/workout';
 import WorkoutTable from '@/components/client/workout-table';
 import DateBoxForm from '@/components/client/date-box-form';
-import { exerciseToText, dayToExercise } from '@/utils/helpers';
+import { dayToExercise, exerciseToText } from '@/utils/helpers';
 
 interface Props {
     cycle: number;

@@ -30,7 +30,7 @@ const CycleLayout = async (props: Props) => {
                     <MenuLink
                         href={`/cycle/${cycle}/week/1`}
                         key={`link-cycle-${cycle}`}
-                        className={`${currentCycle === cycle ? 'bg-sky-500' : ''}`}
+                        className={currentCycle === cycle ? 'bg-sky-500' : ''}
                     >{`${cyclePrefix} ${cycle}`}</MenuLink>
                 ))}
                 <MenuLink href="/profile">{profileHeader}</MenuLink>

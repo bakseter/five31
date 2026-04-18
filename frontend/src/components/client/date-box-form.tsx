@@ -1,10 +1,10 @@
 'use client';
 
-import { type ChangeEvent, useId, useState, useEffect } from 'react';
+import { type ChangeEvent, useEffect, useId, useState } from 'react';
 import { format, parse } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { getDate, setDate } from '@/actions/date';
-import type { Week, Day } from '@/schema/workout';
+import type { Day, Week } from '@/schema/workout';
 import Spinner from '@/components/client/spinner';
 
 interface Props {

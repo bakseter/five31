@@ -1,5 +1,5 @@
 import type { decodeType } from 'typescript-json-decoder';
-import { number, record, intersection } from 'typescript-json-decoder';
+import { intersection, number, record } from 'typescript-json-decoder';
 import { floatCoerciveDecoder } from '@/utils/helpers';
 
 const baseWeightsDecoder = record({

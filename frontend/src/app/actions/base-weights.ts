@@ -4,10 +4,10 @@ import { auth } from '@/api/auth';
 import { backendUrl, cycles } from '@/utils/constants';
 import { addToBaseWeights } from '@/utils/helpers';
 import {
-    baseWeightsDecoder,
-    baseWeightsModifierDecoder,
     type BaseWeights,
     type BaseWeightsModifier,
+    baseWeightsDecoder,
+    baseWeightsModifierDecoder,
 } from '@/schema/base-weights';
 
 const profile = 1;

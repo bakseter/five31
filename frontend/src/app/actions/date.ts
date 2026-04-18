@@ -1,8 +1,8 @@
 'use server';
 
 import { formatISO } from 'date-fns';
-import { record, date as dateDecoder } from 'typescript-json-decoder';
-import type { Week, Day } from '@/schema/workout';
+import { date as dateDecoder, record } from 'typescript-json-decoder';
+import type { Day, Week } from '@/schema/workout';
 import { auth } from '@/api/auth';
 import { backendUrl } from '@/utils/constants';
 
@@ -37,7 +37,7 @@ const setDate = async ({
     if (status !== 200 && status !== 202) throw new Error(`something went wrong: ${status}`);
 };
 
-// have to return date inside an object for some reason??? crashes with pure Date object event though React docs says otherwise:
+// Have to return date inside an object for some reason??? crashes with pure Date object event though React docs says otherwise:
 // https://react.dev/reference/rsc/use-server#serializable-parameters-and-return-values
 const getDate = async ({
     cycle,

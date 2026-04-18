@@ -1,24 +1,26 @@
 'use client';
 
-import { useState, Fragment } from 'react';
-import type { Week, Day } from '@/schema/workout';
+import { Fragment, useState } from 'react';
 import type { BaseWeights } from '@/schema/base-weights';
+import type { Day, Week } from '@/schema/workout';
+import {
+    calculateWeightFromPercentage,
+    percentageToText,
+    weekToDefiningRep,
+    weekToPercentages,
+    weekToSetsReps,
+} from '@/utils/helpers';
+import Button from '@/components/client/button';
 import JokerInput from '@/components/client/joker-input';
 import RepsInput from '@/components/client/reps-input';
-import Button from '@/components/client/button';
-import {
-    weekToSetsReps,
-    percentageToText,
-    weekToPercentages,
-    weekToDefiningRep,
-    calculateWeightFromPercentage,
-} from '@/utils/helpers';
 import { jokerCutoff } from '@/utils/constants';
 
-const indexToHeading = (i: number): string | undefined => {
-    if (i === 0) return 'Warmup';
-    if (i === 3) return 'Main sets';
-    if (i === 6) return 'Joker sets';
+const indexToHeading = (index: number): string | undefined => {
+    if (index === 0) return 'Warmup';
+    if (index === 3) return 'Main sets';
+    if (index === 6) return 'Joker sets';
+
+    return undefined;
 };
 
 interface Props {
@@ -91,7 +93,12 @@ const WorkoutTable = ({ cycle, week, day, baseWeightsForCycle, initialJokerAmoun
                     })}
                 </tbody>
             </table>
-            <Button className="mx-auto" onClick={() => setJokerAmount((value) => value + 1)}>
+            <Button
+                className="mx-auto"
+                onClick={() => {
+                    setJokerAmount((value) => value + 1);
+                }}
+            >
                 Add joker set
             </Button>
         </>

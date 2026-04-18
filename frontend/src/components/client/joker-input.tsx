@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState, useId } from 'react';
-import { setJoker, getJoker } from '@/actions/joker';
-import type { Week, Day } from '@/schema/workout';
+import { useEffect, useId, useState } from 'react';
+import { getJoker, setJoker } from '@/actions/joker';
+import type { Day, Week } from '@/schema/workout';
 import Spinner from '@/components/client/spinner';
 
 interface Props {

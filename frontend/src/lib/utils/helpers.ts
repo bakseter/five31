@@ -1,5 +1,5 @@
-import type { CompExercise, BaseWeights } from '@/schema/base-weights';
-import type { Week, Day } from '@/schema/workout';
+import type { BaseWeights, CompExercise } from '@/schema/base-weights';
+import type { Day, Week } from '@/schema/workout';
 import { warmupCutoff } from '@/utils/constants';
 
 const addToBaseWeights = (baseWeights: BaseWeights, cycle: number): BaseWeights => ({
@@ -9,6 +9,7 @@ const addToBaseWeights = (baseWeights: BaseWeights, cycle: number): BaseWeights 
     op: baseWeights.op + (cycle - 1) * 2.5,
 });
 
+/* eslint-disable default-case,consistent-return */
 const dayToExercise = (day: Day): CompExercise => {
     switch (day) {
         case 1: {
@@ -57,12 +58,6 @@ const exerciseToText = (exercise: CompExercise): string => {
     }
 };
 
-const jokerWeightsExtend = (lastVal: number, jokersAmount?: number): Array<number> => {
-    if (!jokersAmount || jokersAmount < 0) return [];
-
-    return new Array(jokersAmount).fill(lastVal).map((value: number, index) => value + 0.05 * (index + 1));
-};
-
 const weekToBasePercentages = (week: Week): [number, number, number] => {
     switch (week) {
         case 1: {
@@ -75,6 +70,13 @@ const weekToBasePercentages = (week: Week): [number, number, number] => {
             return [0.75, 0.85, 0.95];
         }
     }
+};
+/* eslint-enable default-case,consistent-return */
+
+const jokerWeightsExtend = (lastVal: number, jokersAmount?: number): Array<number> => {
+    if (!jokersAmount || jokersAmount < 0) return [];
+
+    return new Array(jokersAmount).fill(lastVal).map((value: number, index) => value + 0.05 * (index + 1));
 };
 
 const weekToPercentages = (week: Week, customJokersLengthAdd?: number): Array<number> => {

@@ -1,4 +1,4 @@
-import { type decodeType, record, number } from 'typescript-json-decoder';
+import { type decodeType, number, record } from 'typescript-json-decoder';
 import { intCoerciveDecoder } from '@/utils/helpers';
 
 const weekDecoder = (value: unknown) => {

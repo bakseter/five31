@@ -1,8 +1,8 @@
 'use client';
 
-import { useId, type ChangeEvent, useState, useEffect } from 'react';
+import { type ChangeEvent, useEffect, useId, useState } from 'react';
 import { getReps, setReps } from '@/actions/workout';
-import type { Week, Day } from '@/schema/workout';
+import type { Day, Week } from '@/schema/workout';
 import Spinner from '@/components/client/spinner';
 
 interface Props {

@@ -2,17 +2,17 @@ import { expect, test } from 'vitest';
 import type { BaseWeights } from '@/schema/base-weights';
 import {
     addToBaseWeights,
+    calculateWeightFromPercentage,
     dayToExercise,
-    weekToDefiningRep,
     exerciseToText,
+    floatCoerciveDecoder,
+    intCoerciveDecoder,
     jokerWeightsExtend,
+    percentageToText,
     weekToBasePercentages,
+    weekToDefiningRep,
     weekToPercentages,
     weekToSetsReps,
-    percentageToText,
-    intCoerciveDecoder,
-    floatCoerciveDecoder,
-    calculateWeightFromPercentage,
 } from '@/utils/helpers';
 
 const baseWeights: BaseWeights = {

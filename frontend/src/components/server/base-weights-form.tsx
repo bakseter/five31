@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getBaseWeights } from '@/actions/base-weights';
-import { type CompExercise, comps, baseWeightsDecoder } from '@/schema/base-weights';
+import { type CompExercise, baseWeightsDecoder, comps } from '@/schema/base-weights';
 import { auth } from '@/api/auth';
 import Button from '@/components/client/button';
 import BaseWeightsFormInput from '@/components/client/base-weights-form-input';

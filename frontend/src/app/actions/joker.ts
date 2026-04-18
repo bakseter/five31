@@ -1,7 +1,7 @@
 'use server';
 
-import { record, number } from 'typescript-json-decoder';
-import { type Week, type Day } from '@/schema/workout';
+import { number, record } from 'typescript-json-decoder';
+import { type Day, type Week } from '@/schema/workout';
 import { auth } from '@/api/auth';
 import { backendUrl } from '@/utils/constants';
 

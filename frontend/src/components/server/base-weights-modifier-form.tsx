@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { getBaseWeightsModifier, getBaseWeightsForCycle, putBaseWeightsModifier } from '@/actions/base-weights';
-import { comps, baseWeightsModifierDecoder } from '@/schema/base-weights';
+import { getBaseWeightsForCycle, getBaseWeightsModifier, putBaseWeightsModifier } from '@/actions/base-weights';
+import { baseWeightsModifierDecoder, comps } from '@/schema/base-weights';
 import { auth } from '@/api/auth';
 import Button from '@/components/client/button';
 import { exerciseToText } from '@/utils/helpers';

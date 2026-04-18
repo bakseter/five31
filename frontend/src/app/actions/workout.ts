@@ -1,9 +1,9 @@
 'use server';
 
-import { record, number } from 'typescript-json-decoder';
+import { number, record } from 'typescript-json-decoder';
 import { auth } from '@/api/auth';
 import { backendUrl } from '@/utils/constants';
-import { workoutDecoder, type Week, type Day } from '@/schema/workout';
+import { type Day, type Week, workoutDecoder } from '@/schema/workout';
 
 const profile = 1;
 
