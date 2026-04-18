@@ -8,7 +8,7 @@ metadata:
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
