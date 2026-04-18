@@ -29,9 +29,10 @@ spec:
       toPorts:
         - ports:
             - port: '53'
-              protocol: TCP
-            - port: '53'
-              protocol: UDP
+              protocol: ANY
+          rules:
+            dns:
+              - matchPattern: '*'
 
     # Allow egress to backend
     - toEndpoints:
