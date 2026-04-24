@@ -29,11 +29,6 @@
       ]
     },
     {
-      "matchDepTypes": ["dependencies"],
-      "automerge": true,
-      "matchPackageNames": ["/@vercel/analytics/"]
-    },
-    {
       "groupName": "Kotlin packages",
       "matchPackageNames": ["/^org.jetbrains.kotlin.*/"]
     }

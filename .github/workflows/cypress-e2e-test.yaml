@@ -63,23 +63,27 @@ jobs:
         env:
           BACKEND_TAG: ${{ github.sha }}
 
-      - name: Setup frontend dependencies
-        uses: ./.github/actions/pnpm
+      - name: Cache dependencies
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
-          working-directory: 'frontend'
+          path: '~/.bun/install/cache'
+          key: "${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}"
 
-      - name: Force Cypress install, workaround
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+
+      - name: Install dependencies
         run: |
-          cd frontend
-          pnpm cypress install
+          cd frontend 
+          bun install --frozen-lockfile
 
       - name: Run Cypress end-to-end tests
         uses: cypress-io/github-action@783cb3f07983868532cabaedaa1e6c00ff4786a8 # v7.1.9
         with:
           working-directory: 'frontend'
-          install-command: 'pnpm i'
-          build: 'pnpm build'
-          start: 'pnpm start'
+          install-command: 'bun i --frozen-lockfile'
+          build: 'bun build'
+          start: 'bun start'
           wait-on: 'http://localhost:3000, http://localhost:8080/status'
           config: 'video=false'
           browser: 'firefox'
