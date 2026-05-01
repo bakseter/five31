@@ -10,28 +10,14 @@
   "rangeStrategy": "pin",
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
-      "automerge": true,
-      "matchPackageNames": [
-        "/@types/*/",
-        "/eslint-plugin-*/",
-        "/eslint-config-*/",
-        "/prettier/",
-        "/@typescript-eslint/*/",
-        "/@babel/core/",
-        "/@testing-library/react/",
-        "/@vitejs/plugin-react/",
-        "/cypress/",
-        "/jsdom/",
-        "/vite-tsconfig-paths/",
-        "/vitest/",
-        "/webpack/"
-      ]
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
     },
     {
-      "matchDepTypes": ["dependencies"],
-      "automerge": true,
-      "matchPackageNames": ["/@vercel/analytics/"]
+      "description": "Automerge devDependencies",
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
     },
     {
       "groupName": "Kotlin packages",
