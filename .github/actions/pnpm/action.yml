@@ -9,7 +9,7 @@ inputs:
   pnpm-version:
     required: false
     type: 'string'
-    default: '9'
+    default: '10'
   working-directory:
     required: false
     type: 'string'
@@ -30,14 +30,15 @@ runs:
         run_install: 'false'
 
     - name: Get pnpm store directory
+      id: store-path
       shell: bash
       run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        echo "store-path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
 
     - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       name: Setup pnpm cache
       with:
-        path: ${{ env.STORE_PATH }}
+        path: ${{ steps.store-path.outputs.store-path }}
         key: "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}"
         restore-keys: '${{ runner.os }}-pnpm-store-'
 
