@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: five31-frontend
   namespace: five31
   annotations:
     keel.sh/match-tag: 'true'
@@ -11,14 +11,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app.kubernetes.io/name: five31-frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app.kubernetes.io/name: five31-frontend
     spec:
       containers:
-        - name: frontend
+        - name: five31-frontend
           image: ghcr.io/bakseter/five31/frontend:latest
           env:
             - name: NEXT_PUBLIC_ENVIRONMENT

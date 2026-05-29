@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: five31-backend
   namespace: five31
   labels:
-    app: backend
+    app.kubernetes.io/name: five31-backend
 spec:
   type: ClusterIP
   selector:
-    app: backend
+    app.kubernetes.io/name: five31-backend
   ports:
     - name: http
       port: 80

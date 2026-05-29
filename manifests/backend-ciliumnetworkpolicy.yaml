@@ -1,18 +1,18 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: backend
+  name: five31-backend
   namespace: five31
 spec:
   endpointSelector:
     matchLabels:
-      app: backend
+      app.kubernetes.io/name: five31-backend
 
   ingress:
     # Allow ingress from frontend
     - fromEndpoints:
         - matchLabels:
-            app: frontend
+            app.kubernetes.io/name: five31-frontend
       toPorts:
         - ports:
             - port: '8080'

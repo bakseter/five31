@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: database
+  name: five31-database
   namespace: five31
 spec:
   endpointSelector:
@@ -24,7 +24,7 @@ spec:
     # Allow ingress from backend
     - fromEndpoints:
         - matchLabels:
-            app: backend
+            app.kubernetes.io/name: five31-backend
       toPorts:
         - ports:
             - port: '5432'

@@ -1,24 +1,19 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: frontend
+  name: five31-frontend
   namespace: five31
 spec:
   endpointSelector:
     matchLabels:
-      app: frontend
+      app.kubernetes.io/name: five31-frontend
 
   ingress:
-    # Allow ingress from Tailscale
-    - fromEndpoints:
-        - matchLabels:
-            k8s:io.kubernetes.pod.namespace: tailscale
-            tailscale.com/parent-resource: frontend
-            tailscale.com/parent-resource-ns: five31
-      toPorts:
-        - ports:
-            - port: '3000'
-              protocol: TCP
+    # TODO: harden
+    toPorts:
+      - ports:
+          - port: '3000'
+            protocol: TCP
 
   egress:
     # Allow egress to kube-dns (needed for DNS resolution)
@@ -37,7 +32,7 @@ spec:
     # Allow egress to backend
     - toEndpoints:
         - matchLabels:
-            app: backend
+            app.kubernetes.io/name: five31-backend
       toPorts:
         - ports:
             - port: '8080'
