@@ -10,10 +10,10 @@ spec:
 
   ingress:
     # TODO: harden
-    toPorts:
-      - ports:
-          - port: '3000'
-            protocol: TCP
+    - toPorts:
+        - ports:
+            - port: '3000'
+              protocol: TCP
 
   egress:
     # Allow egress to kube-dns (needed for DNS resolution)
