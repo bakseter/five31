@@ -9,6 +9,7 @@ metadata:
     keel.sh/trigger: poll
 spec:
   replicas: 1
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       app.kubernetes.io/name: five31-frontend
