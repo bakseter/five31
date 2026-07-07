@@ -75,11 +75,7 @@ spec:
               protocol: TCP
 
     - toFQDNs:
-        - matchName: 'authentik.bakseter.no'
-      toPorts:
-        - ports:
-            - port: '443'
-              protocol: TCP
+        - matchPattern: '*.bakseter.no'
 
 
 #   - toEndpoints:
