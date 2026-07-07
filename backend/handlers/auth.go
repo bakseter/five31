@@ -109,9 +109,9 @@ func (h *Handler) WithUser(next http.Handler) http.Handler {
 		subject, name, err := h.identity(r)
 		if err != nil {
 			if errors.Is(err, errUnauthorized) {
-				writeError(w, http.StatusUnauthorized, "unauthorized")
+				writeError(w, http.StatusUnauthorized, fmt.Sprintf("unauthorized: %w", err))
 			} else {
-				writeError(w, http.StatusServiceUnavailable, "auth provider unavailable")
+				writeError(w, http.StatusServiceUnavailable, fmt.Sprintf("auth provider unavailable: %w", err))
 			}
 			return
 		}
