@@ -96,7 +96,7 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            app: five31-backend
+            app.kubernetes.io/name: five31-backend
       toPorts:
         - ports:
             - protocol: TCP
