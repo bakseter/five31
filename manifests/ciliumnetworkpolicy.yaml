@@ -74,8 +74,8 @@ spec:
             - port: '5432'
               protocol: TCP
 
-    - toFQDNs:
-        - matchPattern: '*.bakseter.no'
+    - toEntities:
+        - world
 
 
 #   - toEndpoints:
