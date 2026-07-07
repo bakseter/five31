@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: five31-backend
   namespace: five31
+  annotations:
+    keel.sh/match-tag: 'true'
+    keel.sh/policy: force
+    keel.sh/trigger: poll
   labels:
     app.kubernetes.io/name: five31-backend
 spec:
