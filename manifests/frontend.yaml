@@ -30,7 +30,7 @@ spec:
         - name: five31-frontend
           image: ghcr.io/bakseter/five31/frontend:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
           volumeMounts:
             - name: nginx-tmp
               mountPath: /tmp/nginx
@@ -43,7 +43,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 3000
             initialDelaySeconds: 3
             periodSeconds: 10
           resources:
@@ -75,5 +75,5 @@ spec:
   selector:
     app.kubernetes.io/name: five31-frontend
   ports:
-    - port: 80
-      targetPort: 8080
+    - port: 3000
+      targetPort: 3000
