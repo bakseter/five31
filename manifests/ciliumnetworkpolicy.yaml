@@ -74,14 +74,22 @@ spec:
             - port: '5432'
               protocol: TCP
 
-    - toEndpoints:
-        - matchLabels:
-            k8s:io.kubernetes.pod.namespace: monitoring
-            app.kubernetes.io/name: alloy
+    - toFQDNs:
+        - matchName: 'authentik.bakseter.no'
       toPorts:
         - ports:
-            - port: '4317'
+            - port: '443'
               protocol: TCP
+
+
+#   - toEndpoints:
+#       - matchLabels:
+#           k8s:io.kubernetes.pod.namespace: monitoring
+#           app.kubernetes.io/name: alloy
+#     toPorts:
+#       - ports:
+#           - port: '4317'
+#             protocol: TCP
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
