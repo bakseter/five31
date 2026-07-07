@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useUpdateLiftsMutation } from '../api';
-import type { Lift, Unit } from '../schemas';
+import type { Lift } from '../schemas';
 
 export default function SetupForm({ lifts }: { lifts: Lift[] }) {
   const [updateLifts, { isLoading }] = useUpdateLiftsMutation();
 
-  const [unit, setUnit] = useState<Unit>(lifts[0]?.unit ?? 'kg');
   const [maxes, setMaxes] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       lifts.map((l) => [l.slug, l.trainingMax ? String(l.trainingMax) : '']),
@@ -20,7 +19,6 @@ export default function SetupForm({ lifts }: { lifts: Lift[] }) {
       lifts.map((l) => ({
         slug: l.slug,
         trainingMax: parseFloat(maxes[l.slug] || '0') || 0,
-        unit,
       })),
     );
 
@@ -28,19 +26,7 @@ export default function SetupForm({ lifts }: { lifts: Lift[] }) {
     <section className="card setup">
       <div className="card-head">
         <h2>Training maxes</h2>
-        <div className="unit-toggle" role="group" aria-label="Weight unit">
-          {(['kg', 'lb'] as Unit[]).map((u) => (
-            <button
-              key={u}
-              type="button"
-              className={unit === u ? 'on' : ''}
-              aria-pressed={unit === u}
-              onClick={() => setUnit(u)}
-            >
-              {u}
-            </button>
-          ))}
-        </div>
+        <span className="unit-note">kilograms</span>
       </div>
 
       <p className="hint">
@@ -59,13 +45,18 @@ export default function SetupForm({ lifts }: { lifts: Lift[] }) {
                 value={maxes[l.slug] ?? ''}
                 onChange={(e) => setMax(l.slug, e.target.value)}
               />
-              <span className="field-unit">{unit}</span>
+              <span className="field-unit">kg</span>
             </span>
           </label>
         ))}
       </div>
 
-      <button className="primary" type="button" onClick={submit} disabled={isLoading}>
+      <button
+        className="primary"
+        type="button"
+        onClick={submit}
+        disabled={isLoading}
+      >
         {isLoading ? 'Calculating\u2026' : 'Calculate cycle'}
       </button>
     </section>

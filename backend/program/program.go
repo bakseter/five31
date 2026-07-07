@@ -1,7 +1,8 @@
 // Package program holds the 5/3/1 domain logic: the fixed four-week wave and
 // the pure function that turns a set of training maxes into a full cycle.
 // Percentages are Jim Wendler's classic scheme, applied to the Training Max
-// (all weights derive from the TM, never the true 1RM).
+// (all weights derive from the TM, never the true 1RM). All weights are in
+// kilograms and snap to the nearest 2.5 kg.
 package program
 
 import (
@@ -16,7 +17,6 @@ type LiftMax struct {
 	Name        string
 	Slug        string
 	TrainingMax float64
-	Unit        string // "kg" or "lb"
 }
 
 type set struct {
@@ -37,7 +37,7 @@ var weeks = []struct {
 	{"Week 4 — Deload", []set{{40, "5", false}, {50, "5", false}, {60, "5", false}}},
 }
 
-// ComputedSet is one prescribed set with its rounded working weight.
+// ComputedSet is one prescribed set with its rounded working weight (kg).
 type ComputedSet struct {
 	Percent int     `json:"percent"`
 	Reps    string  `json:"reps"`
@@ -59,18 +59,12 @@ type ComputedWeek struct {
 
 // Cycle is the full four-week block returned to the client.
 type Cycle struct {
-	Unit  string         `json:"unit"`
 	Weeks []ComputedWeek `json:"weeks"`
 }
 
 // BuildCycle is pure: same maxes in, same cycle out. No I/O, easy to test.
 func BuildCycle(lifts []LiftMax) Cycle {
-	unit := "kg"
-	if len(lifts) > 0 && lifts[0].Unit != "" {
-		unit = lifts[0].Unit
-	}
-
-	c := Cycle{Unit: unit, Weeks: make([]ComputedWeek, 0, len(weeks))}
+	c := Cycle{Weeks: make([]ComputedWeek, 0, len(weeks))}
 	for _, wk := range weeks {
 		cw := ComputedWeek{Name: wk.name, Lifts: make([]ComputedLift, 0, len(lifts))}
 		for _, l := range lifts {
@@ -80,7 +74,7 @@ func BuildCycle(lifts []LiftMax) Cycle {
 					Percent: s.percent,
 					Reps:    s.reps,
 					AMRAP:   s.amrap,
-					Weight:  round(l.TrainingMax*float64(s.percent)/100, l.Unit),
+					Weight:  round(l.TrainingMax * float64(s.percent) / 100),
 				})
 			}
 			cw.Lifts = append(cw.Lifts, cl)
@@ -90,48 +84,36 @@ func BuildCycle(lifts []LiftMax) Cycle {
 	return c
 }
 
-// round snaps a weight to the smallest loadable increment: 2.5 kg or 5 lb.
-func round(w float64, unit string) float64 {
-	inc := 2.5
-	if unit == "lb" {
-		inc = 5
-	}
-	return math.Round(w/inc) * inc
+// round snaps a weight to the smallest loadable increment: 2.5 kg.
+func round(w float64) float64 {
+	return math.Round(w/2.5) * 2.5
 }
 
 // ---------------------------------------------------------------------------
 // Progression: turn one cycle's AMRAP results into the next cycle's maxes.
 //
-// Wendler's baseline rule is a fixed per-cycle bump: +2.5 kg / 5 lb on the
-// presses, +5 kg / 10 lb on squat & deadlift. On top of that we read the
-// heaviest AMRAP set the lifter actually logged and auto-regulate: crush it →
-// bigger jump, miss the target → hold. The user can override every number
-// before it's committed, so this is a suggestion, never a mandate.
+// Wendler's baseline rule is a fixed per-cycle bump: +2.5 kg on the presses,
+// +5 kg on squat & deadlift. On top of that we read the heaviest AMRAP set the
+// lifter actually logged and auto-regulate: crush it → bigger jump, miss the
+// target → hold. The user can override every number before it's committed, so
+// this is a suggestion, never a mandate.
 // ---------------------------------------------------------------------------
 
-// Standard per-cycle training-max increments.
+// Standard per-cycle training-max increments (kg).
 const (
-	upperIncKg = 2.5
-	lowerIncKg = 5.0
-	upperIncLb = 5.0
-	lowerIncLb = 10.0
+	upperInc = 2.5
+	lowerInc = 5.0
 )
 
-// isLower reports whether a lift trains the lower body (and so earns the
-// bigger jump). Derived from the slug, so no extra data is stored.
+// isLower reports whether a lift trains the lower body (and so earns the bigger
+// jump). Derived from the slug, so no extra data is stored.
 func isLower(slug string) bool { return slug == "squat" || slug == "deadlift" }
 
-func increment(slug, unit string) float64 {
-	switch {
-	case isLower(slug) && unit == "lb":
-		return lowerIncLb
-	case isLower(slug):
-		return lowerIncKg
-	case unit == "lb":
-		return upperIncLb
-	default:
-		return upperIncKg
+func increment(slug string) float64 {
+	if isLower(slug) {
+		return lowerInc
 	}
+	return upperInc
 }
 
 // amrapSet is the percent and prescribed-rep target of one week's "+" set.
@@ -151,13 +133,12 @@ func amrapSets() []amrapSet {
 	return out
 }
 
-// LiftResult is one lift's finished cycle: its max, unit, and the reps hit on
-// each week's AMRAP set (nil where the lifter didn't log anything).
+// LiftResult is one lift's finished cycle: its max and the reps hit on each
+// week's AMRAP set (nil where the lifter didn't log anything).
 type LiftResult struct {
 	Slug        string
 	Name        string
 	TrainingMax float64
-	Unit        string
 	Reps        [3]*int // weeks 1, 2, 3
 }
 
@@ -166,7 +147,6 @@ type LiftResult struct {
 type Suggestion struct {
 	Slug               string  `json:"slug"`
 	Name               string  `json:"name"`
-	Unit               string  `json:"unit"`
 	CurrentMax         float64 `json:"currentMax"`
 	SuggestedMax       float64 `json:"suggestedMax"`
 	EstimatedOneRepMax float64 `json:"estimatedOneRepMax"`
@@ -181,11 +161,10 @@ func SuggestNext(results []LiftResult) []Suggestion {
 	out := make([]Suggestion, 0, len(results))
 
 	for _, r := range results {
-		inc := increment(r.Slug, r.Unit)
+		inc := increment(r.Slug)
 		s := Suggestion{
 			Slug:       r.Slug,
 			Name:       r.Name,
-			Unit:       r.Unit,
 			CurrentMax: r.TrainingMax,
 		}
 
@@ -200,24 +179,24 @@ func SuggestNext(results []LiftResult) []Suggestion {
 
 		switch {
 		case best == -1:
-			s.SuggestedMax = round(r.TrainingMax+inc, r.Unit)
+			s.SuggestedMax = round(r.TrainingMax + inc)
 			s.Reason = "No AMRAP logged — standard progression."
 		default:
 			reps := *r.Reps[best]
 			set := amr[best]
-			weight := round(r.TrainingMax*float64(set.percent)/100, r.Unit)
+			weight := round(r.TrainingMax * float64(set.percent) / 100)
 			if reps > 0 {
-				s.EstimatedOneRepMax = round(epley(weight, reps), r.Unit)
+				s.EstimatedOneRepMax = round(epley(weight, reps))
 			}
 			switch {
 			case reps <= 0:
 				s.SuggestedMax = r.TrainingMax
 				s.Reason = "Missed the top set — repeat this max."
 			case reps >= set.target+3:
-				s.SuggestedMax = round(r.TrainingMax+2*inc, r.Unit)
+				s.SuggestedMax = round(r.TrainingMax + 2*inc)
 				s.Reason = fmt.Sprintf("Strong: %d reps at %d%% — double jump.", reps, set.percent)
 			case reps >= set.target:
-				s.SuggestedMax = round(r.TrainingMax+inc, r.Unit)
+				s.SuggestedMax = round(r.TrainingMax + inc)
 				s.Reason = fmt.Sprintf("Hit target (%d/%d) — standard progression.", reps, set.target)
 			default:
 				s.SuggestedMax = r.TrainingMax
@@ -238,12 +217,12 @@ func epley(weight float64, reps int) float64 {
 // EstimateOneRepMax returns an Epley 1RM estimate from the heaviest AMRAP set
 // that was logged (with at least one rep) for a completed cycle, or 0 if none
 // was logged. Used to chart progress in the history view.
-func EstimateOneRepMax(trainingMax float64, unit string, reps [3]*int) float64 {
+func EstimateOneRepMax(trainingMax float64, reps [3]*int) float64 {
 	amr := amrapSets()
 	for i := len(amr) - 1; i >= 0; i-- {
 		if i < len(reps) && reps[i] != nil && *reps[i] > 0 {
-			weight := round(trainingMax*float64(amr[i].percent)/100, unit)
-			return round(epley(weight, *reps[i]), unit)
+			weight := round(trainingMax * float64(amr[i].percent) / 100)
+			return round(epley(weight, *reps[i]))
 		}
 	}
 	return 0

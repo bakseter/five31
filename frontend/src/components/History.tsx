@@ -12,13 +12,18 @@ const fmtDate = (iso: string) => {
   const d = new Date(iso);
   return Number.isNaN(d.getTime())
     ? ''
-    : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    : d.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
 };
 
 // Group the flat, already-sorted log (newest cycle first, lifts in order) into
 // one block per completed cycle without disturbing that order.
 function groupByCycle(entries: HistoryEntry[]) {
-  const groups: Array<{ cycle: number; date: string; lifts: HistoryEntry[] }> = [];
+  const groups: Array<{ cycle: number; date: string; lifts: HistoryEntry[] }> =
+    [];
   for (const e of entries) {
     let g = groups[groups.length - 1];
     if (!g || g.cycle !== e.cycleNumber) {
@@ -49,7 +54,9 @@ export default function History() {
         <article className="log-cycle" key={c.cycle}>
           <div className="log-cycle-head">
             <span className="log-cycle-n">Cycle {c.cycle}</span>
-            {c.date && <span className="log-cycle-date">{fmtDate(c.date)}</span>}
+            {c.date && (
+              <span className="log-cycle-date">{fmtDate(c.date)}</span>
+            )}
           </div>
 
           <div className="log-lifts">
@@ -57,16 +64,18 @@ export default function History() {
               <div className="log-lift" key={l.slug}>
                 <div className="log-lift-top">
                   <span className="lift-name">{l.name}</span>
-                  <span className="tm">
-                    TM {l.trainingMax}
-                    {l.unit}
-                  </span>
+                  <span className="tm">TM {l.trainingMax}kg</span>
                 </div>
                 <div className="log-amraps">
                   {AMRAP_LABELS.map(({ label, key }) => {
                     const reps = l[key] as number | null;
                     return (
-                      <span className={reps == null ? 'amrap-chip empty' : 'amrap-chip'} key={label}>
+                      <span
+                        className={
+                          reps == null ? 'amrap-chip empty' : 'amrap-chip'
+                        }
+                        key={label}
+                      >
                         <em>{label}</em>
                         {reps == null ? '—' : `\u00d7${reps}`}
                       </span>
@@ -74,8 +83,7 @@ export default function History() {
                   })}
                   {l.estimatedOneRepMax > 0 && (
                     <span className="e1rm">
-                      est. 1RM {l.estimatedOneRepMax}
-                      {l.unit}
+                      est. 1RM {l.estimatedOneRepMax}kg
                     </span>
                   )}
                 </div>

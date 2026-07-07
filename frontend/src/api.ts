@@ -4,16 +4,17 @@ import {
   historySchema,
   liftsSchema,
   suggestionsSchema,
+  userSchema,
   type Cycle,
   type HistoryEntry,
   type Lift,
   type Suggestion,
+  type User,
 } from './schemas';
 
 export interface LiftUpdate {
   slug: string;
   trainingMax: number;
-  unit: string;
 }
 
 // reps are null when a week's AMRAP set hasn't been logged.
@@ -34,8 +35,13 @@ export interface AdvanceUpdate {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Lifts', 'Cycle', 'Next', 'History'],
+  tagTypes: ['Me', 'Lifts', 'Cycle', 'Next', 'History'],
   endpoints: (build) => ({
+    getMe: build.query<User, void>({
+      query: () => 'me',
+      transformResponse: (raw) => userSchema.parse(raw),
+      providesTags: ['Me'],
+    }),
     getLifts: build.query<Lift[], void>({
       query: () => 'lifts',
       transformResponse: (raw) => liftsSchema.parse(raw),
@@ -79,6 +85,7 @@ export const api = createApi({
 });
 
 export const {
+  useGetMeQuery,
   useGetLiftsQuery,
   useUpdateLiftsMutation,
   useGetCycleQuery,

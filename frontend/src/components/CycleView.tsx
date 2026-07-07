@@ -30,7 +30,9 @@ export default function CycleView({ lifts }: { lifts: Lift[] }) {
 
   if (!cycle) return null;
 
-  const hasMaxes = cycle.weeks.some((w) => w.lifts.some((l) => l.trainingMax > 0));
+  const hasMaxes = cycle.weeks.some((w) =>
+    w.lifts.some((l) => l.trainingMax > 0),
+  );
   if (!hasMaxes) {
     return (
       <section className="empty">
@@ -41,7 +43,10 @@ export default function CycleView({ lifts }: { lifts: Lift[] }) {
 
   const setRep = (slug: string, week: number, raw: string) =>
     setReps((prev) => {
-      const next = { ...prev, [slug]: [...(prev[slug] ?? ['', '', ''])] as [string, string, string] };
+      const next = {
+        ...prev,
+        [slug]: [...(prev[slug] ?? ['', '', ''])] as [string, string, string],
+      };
       next[slug][week] = raw.replace(/[^0-9]/g, '');
       return next;
     });
@@ -70,10 +75,7 @@ export default function CycleView({ lifts }: { lifts: Lift[] }) {
               <div className="lift-card" key={lift.slug}>
                 <div className="lift-card-head">
                   <span className="lift-name">{lift.name}</span>
-                  <span className="tm">
-                    TM {lift.trainingMax}
-                    {cycle.unit}
-                  </span>
+                  <span className="tm">TM {lift.trainingMax}kg</span>
                 </div>
                 <ol className="sets">
                   {lift.sets.map((s, i) => (
@@ -81,7 +83,7 @@ export default function CycleView({ lifts }: { lifts: Lift[] }) {
                       <span className="pct">{s.percent}%</span>
                       <span className="wt">
                         {s.weight}
-                        <em>{cycle.unit}</em>
+                        <em>kg</em>
                       </span>
                       <span className="reps">&times;{s.reps}</span>
                       {s.amrap && (
@@ -91,7 +93,9 @@ export default function CycleView({ lifts }: { lifts: Lift[] }) {
                             inputMode="numeric"
                             placeholder="—"
                             value={reps[lift.slug]?.[wi] ?? ''}
-                            onChange={(e) => setRep(lift.slug, wi, e.target.value)}
+                            onChange={(e) =>
+                              setRep(lift.slug, wi, e.target.value)
+                            }
                             onBlur={save}
                           />
                         </label>

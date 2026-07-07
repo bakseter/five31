@@ -3,13 +3,10 @@ package program
 import "testing"
 
 func TestBuildCycle(t *testing.T) {
-	c := BuildCycle([]LiftMax{{Name: "Squat", Slug: "squat", TrainingMax: 100, Unit: "kg"}})
+	c := BuildCycle([]LiftMax{{Name: "Squat", Slug: "squat", TrainingMax: 100}})
 
 	if len(c.Weeks) != 4 {
 		t.Fatalf("want 4 weeks, got %d", len(c.Weeks))
-	}
-	if c.Unit != "kg" {
-		t.Fatalf("want unit kg, got %s", c.Unit)
 	}
 
 	// Week 1 top set: 85% of 100 = 85, and it must be the AMRAP set.
@@ -24,18 +21,18 @@ func TestBuildCycle(t *testing.T) {
 	}
 }
 
-func TestRoundingLb(t *testing.T) {
-	// 65% of 130 lb = 84.5 → rounds to nearest 5 → 85.
-	if got := round(84.5, "lb"); got != 85 {
+func TestRounding(t *testing.T) {
+	// Rounds to nearest 2.5 kg.
+	if got := round(84.5); got != 85 {
 		t.Fatalf("want 85, got %v", got)
 	}
-	// kg rounds to nearest 2.5: 84.5 → 85.
-	if got := round(84.5, "kg"); got != 85 {
-		t.Fatalf("want 85, got %v", got)
-	}
-	// 61 kg → nearest 2.5 → 60.
-	if got := round(61, "kg"); got != 60 {
+	// 61 → nearest 2.5 → 60.
+	if got := round(61); got != 60 {
 		t.Fatalf("want 60, got %v", got)
+	}
+	// 63.75 → nearest 2.5 → 65 (ties round half up via math.Round).
+	if got := round(63.75); got != 65 {
+		t.Fatalf("want 65, got %v", got)
 	}
 }
 
@@ -52,25 +49,25 @@ func TestSuggestNext(t *testing.T) {
 		{
 			// Upper lift, nothing logged → +2.5 kg standard bump.
 			name: "no log upper",
-			in:   LiftResult{Slug: "bench", TrainingMax: 100, Unit: "kg"},
+			in:   LiftResult{Slug: "bench", TrainingMax: 100},
 			want: 102.5,
 		},
 		{
 			// Lower lift hits the target single → +5 kg standard bump.
 			name: "hit target lower",
-			in:   LiftResult{Slug: "squat", TrainingMax: 140, Unit: "kg", Reps: reps(nil, nil, intp(1))},
+			in:   LiftResult{Slug: "squat", TrainingMax: 140, Reps: reps(nil, nil, intp(1))},
 			want: 145,
 		},
 		{
 			// Crushed the top single (1+ target is 1, got 5 ≥ 1+3) → double jump.
 			name: "crushed lower",
-			in:   LiftResult{Slug: "deadlift", TrainingMax: 180, Unit: "kg", Reps: reps(nil, nil, intp(5))},
+			in:   LiftResult{Slug: "deadlift", TrainingMax: 180, Reps: reps(nil, nil, intp(5))},
 			want: 190,
 		},
 		{
 			// Missed the top set → hold the max.
 			name: "missed top",
-			in:   LiftResult{Slug: "press", TrainingMax: 60, Unit: "kg", Reps: reps(nil, nil, intp(0))},
+			in:   LiftResult{Slug: "press", TrainingMax: 60, Reps: reps(nil, nil, intp(0))},
 			want: 60,
 		},
 	}
@@ -88,15 +85,15 @@ func TestSuggestNext(t *testing.T) {
 
 func TestEstimateOneRepMax(t *testing.T) {
 	// Nothing logged → 0.
-	if got := EstimateOneRepMax(100, "kg", [3]*int{nil, nil, nil}); got != 0 {
+	if got := EstimateOneRepMax(100, [3]*int{nil, nil, nil}); got != 0 {
 		t.Fatalf("want 0, got %v", got)
 	}
-	// Week 3 (95%) of TM 100 = 95 kg for 3 reps → Epley 95×(1+3/30)=104.5 → 105 (2.5 grid).
-	if got := EstimateOneRepMax(100, "kg", [3]*int{nil, nil, intp(3)}); got != 105 {
+	// Week 3 (95%) of TM 100 = 95 kg for 3 reps → Epley 95×(1+3/30)=104.5 → 105.
+	if got := EstimateOneRepMax(100, [3]*int{nil, nil, intp(3)}); got != 105 {
 		t.Fatalf("want 105, got %v", got)
 	}
 	// Only week 1 (85%) logged: 85 kg for 5 → 85×(1+5/30)=99.16 → 100.
-	if got := EstimateOneRepMax(100, "kg", [3]*int{intp(5), nil, nil}); got != 100 {
+	if got := EstimateOneRepMax(100, [3]*int{intp(5), nil, nil}); got != 100 {
 		t.Fatalf("want 100, got %v", got)
 	}
 }

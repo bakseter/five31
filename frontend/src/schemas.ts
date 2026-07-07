@@ -1,19 +1,25 @@
 import { z } from 'zod';
 
 // Schemas double as runtime validators (via RTK Query transformResponse) and as
-// the source of the TypeScript types — one definition, no drift.
-
-export const unitSchema = z.enum(['kg', 'lb']);
-export type Unit = z.infer<typeof unitSchema>;
+// the source of the TypeScript types — one definition, no drift. All weights are
+// kilograms.
 
 const repsSchema = z.number().int().nonnegative().nullable();
+
+// The signed-in identity. Just a default user for now, but the shape is ready
+// for real per-user auth.
+export const userSchema = z.object({
+  id: z.number(),
+  subject: z.string(),
+  name: z.string(),
+});
+export type User = z.infer<typeof userSchema>;
 
 export const liftSchema = z.object({
   id: z.number(),
   slug: z.string(),
   name: z.string(),
   trainingMax: z.number(),
-  unit: unitSchema,
   order: z.number(),
   cycleNumber: z.number(),
   repsWeek1: repsSchema,
@@ -27,7 +33,6 @@ export type Lift = z.infer<typeof liftSchema>;
 export const suggestionSchema = z.object({
   slug: z.string(),
   name: z.string(),
-  unit: unitSchema,
   currentMax: z.number(),
   suggestedMax: z.number(),
   estimatedOneRepMax: z.number(),
@@ -43,7 +48,6 @@ export const historyEntrySchema = z.object({
   slug: z.string(),
   name: z.string(),
   trainingMax: z.number(),
-  unit: unitSchema,
   repsWeek1: repsSchema,
   repsWeek2: repsSchema,
   repsWeek3: repsSchema,
@@ -72,7 +76,6 @@ export const computedWeekSchema = z.object({
 });
 
 export const cycleSchema = z.object({
-  unit: unitSchema,
   weeks: z.array(computedWeekSchema),
 });
 export type Cycle = z.infer<typeof cycleSchema>;

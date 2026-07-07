@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -20,16 +21,17 @@ func main() {
 	}
 
 	db := connect(dsn)
-	if err := db.AutoMigrate(&models.Lift{}, &models.CycleLog{}); err != nil {
+	if err := db.AutoMigrate(&models.User{}, &models.Lift{}, &models.CycleLog{}); err != nil {
 		log.Fatalf("migrate: %v", err)
 	}
-	if err := models.Seed(db); err != nil {
+	if err := ensureDefaultUser(db); err != nil {
 		log.Fatalf("seed: %v", err)
 	}
 
 	h := handlers.New(db)
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/health", h.Health)
+	mux.HandleFunc("GET /api/me", h.Me)
 	mux.HandleFunc("GET /api/lifts", h.GetLifts)
 	mux.HandleFunc("PUT /api/lifts", h.UpdateLifts)
 	mux.HandleFunc("PUT /api/amrap", h.UpdateAmrap)
@@ -40,9 +42,35 @@ func main() {
 
 	const addr = ":8080"
 	log.Printf("531-tracker listening on %s", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	// WithUser resolves the caller (default user until an auth proxy injects a
+	// real identity) for every request except the health probe.
+	if err := http.ListenAndServe(addr, h.WithUser(mux)); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// ensureDefaultUser creates the fallback identity and adopts any pre-existing
+// user-less rows from before multi-user support, so upgrading in place keeps
+// existing training data. Idempotent.
+func ensureDefaultUser(db *gorm.DB) error {
+	var user models.User
+	err := db.Where("subject = ?", models.DefaultSubject).First(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		user = models.User{Subject: models.DefaultSubject, Name: "Default User"}
+		if err := db.Create(&user).Error; err != nil {
+			return err
+		}
+	} else if err != nil {
+		return err
+	}
+	// Adopt orphan rows (user_id = 0) left by the single-user schema.
+	if err := db.Model(&models.Lift{}).Where("user_id = 0").Update("user_id", user.ID).Error; err != nil {
+		return err
+	}
+	if err := db.Model(&models.CycleLog{}).Where("user_id = 0").Update("user_id", user.ID).Error; err != nil {
+		return err
+	}
+	return models.SeedLifts(db, user.ID)
 }
 
 // connect retries so the pod can start before Postgres is accepting connections.

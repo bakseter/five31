@@ -6,14 +6,20 @@ import type { Lift } from '../schemas';
 // override any of them, then commit to start the next cycle.
 export default function AdvancePanel({ lifts }: { lifts: Lift[] }) {
   const [open, setOpen] = useState(false);
-  const { data: suggestions } = useGetNextCycleQuery(undefined, { skip: !open });
+  const { data: suggestions } = useGetNextCycleQuery(undefined, {
+    skip: !open,
+  });
   const [advance, { isLoading }] = useAdvanceCycleMutation();
 
   // Editable chosen max per lift, seeded from the server's suggestion.
   const [chosen, setChosen] = useState<Record<string, string>>({});
   useEffect(() => {
     if (suggestions) {
-      setChosen(Object.fromEntries(suggestions.map((s) => [s.slug, String(s.suggestedMax)])));
+      setChosen(
+        Object.fromEntries(
+          suggestions.map((s) => [s.slug, String(s.suggestedMax)]),
+        ),
+      );
     }
   }, [suggestions]);
 
@@ -28,7 +34,8 @@ export default function AdvancePanel({ lifts }: { lifts: Lift[] }) {
         <div>
           <h2>Finished the cycle?</h2>
           <p className="hint">
-            Log your AMRAP reps above, then review the maxes for cycle {cycle + 1}.
+            Log your AMRAP reps above, then review the maxes for cycle{' '}
+            {cycle + 1}.
           </p>
         </div>
         <button type="button" className="ghost" onClick={() => setOpen(true)}>
@@ -54,7 +61,11 @@ export default function AdvancePanel({ lifts }: { lifts: Lift[] }) {
         <h2>
           Cycle {cycle} &rarr; {cycle + 1}
         </h2>
-        <button type="button" className="linkish" onClick={() => setOpen(false)}>
+        <button
+          type="button"
+          className="linkish"
+          onClick={() => setOpen(false)}
+        >
           Cancel
         </button>
       </div>
@@ -74,16 +85,12 @@ export default function AdvancePanel({ lifts }: { lifts: Lift[] }) {
                   <span className="suggest-reason">{s.reason}</span>
                   {s.estimatedOneRepMax > 0 && (
                     <span className="e1rm">
-                      est. 1RM {s.estimatedOneRepMax}
-                      {s.unit}
+                      est. 1RM {s.estimatedOneRepMax}kg
                     </span>
                   )}
                 </div>
                 <div className="suggest-nums">
-                  <span className="from">
-                    {s.currentMax}
-                    {s.unit}
-                  </span>
+                  <span className="from">{s.currentMax}kg</span>
                   <span className="arrow">&rarr;</span>
                   <span className="field small">
                     <input
@@ -96,14 +103,19 @@ export default function AdvancePanel({ lifts }: { lifts: Lift[] }) {
                         }))
                       }
                     />
-                    <span className="field-unit">{s.unit}</span>
+                    <span className="field-unit">kg</span>
                   </span>
                 </div>
               </div>
             ))}
           </div>
 
-          <button className="primary" type="button" onClick={commit} disabled={isLoading}>
+          <button
+            className="primary"
+            type="button"
+            onClick={commit}
+            disabled={isLoading}
+          >
             {isLoading ? 'Advancing\u2026' : `Start cycle ${cycle + 1}`}
           </button>
         </>
