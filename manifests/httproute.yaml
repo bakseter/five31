@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: five31
+  namespace: five31
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: bakseter-net-gateway-home
+      namespace: tailscale
+
+  hostnames:
+    - five31.bakseter.net
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: five31-frontend
+          port: 80
+
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: five31-backend
+          port: 8080
