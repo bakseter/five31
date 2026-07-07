@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.tsbuildinfo
+go.sum
+.DS_Store
+.env

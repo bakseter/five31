@@ -1,0 +1,25 @@
+services:
+  backend:
+    image: ghcr.io/bakseter/five31/backend:latest
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      DATABASE_URL: postgres://app:app@db:5432/fivethreeone?sslmode=disable
+    depends_on:
+      database:
+        condition: service_healthy
+    links:
+      - database
+
+  database:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: fivethreeone
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U app -d fivethreeone']
+      interval: 3s
+      timeout: 3s
+      retries: 10

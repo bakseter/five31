@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: five31-backend
+  namespace: five31
+  labels:
+    app.kubernetes.io/name: five31-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: five31-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: five31-backend
+    spec:
+      containers:
+        - name: five31-backend
+          image: ghcr.io/bakseter/five31/backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            # CNPG publishes a full connection URI under this secret key.
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: five31-database-app
+                  key: uri
+          readinessProbe:
+            httpGet: { path: /api/health, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: five31-backend
+  namespace: five31
+spec:
+  selector:
+    app.kubernetes.io/name: five31-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
