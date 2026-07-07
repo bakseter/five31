@@ -28,7 +28,7 @@ func main() {
 		log.Fatalf("seed: %v", err)
 	}
 
-	h := handlers.New(db)
+	h := handlers.New(db, os.Getenv("OIDC_ISSUER"), os.Getenv("OIDC_CLIENT_ID"))
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/health", h.Health)
 	mux.HandleFunc("GET /api/me", h.Me)

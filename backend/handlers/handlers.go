@@ -10,9 +10,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type Handler struct{ db *gorm.DB }
+type Handler struct {
+	db   *gorm.DB
+	auth *authenticator
+}
 
-func New(db *gorm.DB) *Handler { return &Handler{db: db} }
+// New builds the handler. issuer/clientID configure OIDC access-token
+// verification; pass empty issuer to disable auth (local dev → default user).
+func New(db *gorm.DB, issuer, clientID string) *Handler {
+	return &Handler{db: db, auth: &authenticator{issuer: issuer, clientID: clientID}}
+}
 
 func (h *Handler) Health(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})

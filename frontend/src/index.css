@@ -140,6 +140,17 @@ h3 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.signout {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.signout:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
 
 /* ---- notes ---- */
 .note {

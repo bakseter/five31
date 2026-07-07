@@ -25,12 +25,15 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            # CNPG publishes a full connection URI under this secret key.
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: five31-database-app
                   key: uri
+            - name: OIDC_ISSUER
+              value: 'https://authentik.bakseter.no/application/o/five31/'
+            - name: OIDC_CLIENT_ID
+              value: 'five31'
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

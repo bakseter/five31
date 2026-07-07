@@ -6,3 +6,6 @@ resources:
   - backend.yaml
   - cluster.yaml
   - httproute.yaml
+  - securitypolicy.yaml
+  - sealedsecret.yaml
+  - ciliumnetworkpolicy.yaml

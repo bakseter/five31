@@ -24,9 +24,15 @@ export default function App() {
         <div className="masthead-meta">
           {started && <span className="cycle-badge">Cycle {cycleNumber}</span>}
           {me && me.subject !== 'default' && (
-            <span className="user-chip" title={me.subject}>
-              {me.name || me.subject}
-            </span>
+            <>
+              <span className="user-chip" title={me.subject}>
+                {me.name || me.subject}
+              </span>
+              {/* Envoy Gateway intercepts /logout and clears the OIDC session. */}
+              <a className="signout" href="/logout">
+                Sign out
+              </a>
+            </>
           )}
         </div>
       </header>
