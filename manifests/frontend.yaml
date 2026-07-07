@@ -24,7 +24,7 @@ spec:
               topologyKey: bakseter.net/physical-node
       containers:
         - name: five31-frontend
-          image: five31/frontend:latest
+          image: ghcr.io/bakseter/five31/frontend:latest
           ports:
             - containerPort: 8080
           volumeMounts:
