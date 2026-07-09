@@ -8,8 +8,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/bakseter/five31/models"
 	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/example/531-tracker/models"
 	"gorm.io/gorm"
 )
 

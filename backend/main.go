@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/example/531-tracker/handlers"
-	"github.com/example/531-tracker/models"
+	"github.com/bakseter/five31/handlers"
+	"github.com/bakseter/five31/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -41,7 +41,7 @@ func main() {
 	mux.HandleFunc("GET /api/history", h.GetHistory)
 
 	const addr = ":8080"
-	log.Printf("531-tracker listening on %s", addr)
+	log.Printf("five31-backend listening on %s", addr)
 	// WithUser resolves the caller (default user until an auth proxy injects a
 	// real identity) for every request except the health probe.
 	if err := http.ListenAndServe(addr, h.WithUser(mux)); err != nil {

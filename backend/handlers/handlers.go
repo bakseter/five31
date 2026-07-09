@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/example/531-tracker/models"
-	"github.com/example/531-tracker/program"
+	"github.com/bakseter/five31/models"
+	"github.com/bakseter/five31/program"
 	"gorm.io/gorm"
 )
 
