@@ -2,8 +2,11 @@ FROM node:24-alpine@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install
+RUN apk update && \
+    apk add pnpm --no-cache
+
+COPY package.json pnpm-locl.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 RUN npm run build
