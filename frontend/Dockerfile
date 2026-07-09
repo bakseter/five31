@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apk update && \
     apk add pnpm --no-cache
 
-COPY package.json pnpm-locl.yaml ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
