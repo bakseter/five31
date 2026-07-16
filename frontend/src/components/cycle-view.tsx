@@ -65,10 +65,11 @@ const CycleView = ({ lifts }: { lifts: Lift[] }) => {
     // Persist every lift's logged reps in one call (backend upserts by slug).
     const save = () =>
         updateAmrap(
-            lifts.map((lift) => {
-                const repsToSave = reps[lift.slug] ?? ['', '', ''];
+            lifts.map(({ slug }) => {
+                const repsToSave = reps[slug] ?? ['', '', ''];
+
                 return {
-                    slug: lift.slug,
+                    slug,
                     repsWeek1: toReps(repsToSave[0]),
                     repsWeek2: toReps(repsToSave[1]),
                     repsWeek3: toReps(repsToSave[2]),
@@ -97,7 +98,13 @@ const CycleView = ({ lifts }: { lifts: Lift[] }) => {
                                         <li
                                             key={index}
                                             className={
-                                                set.amrap ? 'set amrap' : 'set'
+                                                /* eslint-disable no-nested-ternay */
+                                                set.amrap
+                                                    ? 'set amrap'
+                                                    : set.warmup
+                                                      ? 'set warmup'
+                                                      : 'set'
+                                                /* eslint-enable no-nested-ternay */
                                             }
                                         >
                                             <span className="pct">

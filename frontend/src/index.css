@@ -24,6 +24,11 @@
     --blue-wash: #eff4ff; /* light accent fill (AMRAP, focus) */
     --blue-line: #cfe0ff;
 
+    --green: #16a34a;
+    --green-hover: #15803d;
+    --green-wash: #f0fdf4;
+    --green-line: #dcfce7;
+
     --radius-lg: 16px;
     --radius: 12px;
     --radius-sm: 10px;
@@ -330,7 +335,7 @@ button {
 }
 .lift-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 12px;
 }
 .lift-card {
@@ -396,6 +401,15 @@ button {
     font-size: 13px;
     font-weight: 500;
     color: var(--ink-soft);
+}
+
+.set.warmup {
+    background: var(--green-wash);
+    border-color: var(--green-line);
+}
+.set.amrap .reps {
+    color: var(--green);
+    font-weight: 700;
 }
 
 /* AMRAP "+" set — the money set, marked with the accent */
