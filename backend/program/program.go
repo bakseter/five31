@@ -22,6 +22,7 @@ type LiftMax struct {
 type set struct {
 	percent int
 	reps    string
+	warmup  bool
 	amrap   bool
 }
 
@@ -31,16 +32,54 @@ var weeks = []struct {
 	name string
 	sets []set
 }{
-	{"Week 1 — 5s", []set{{65, "5", false}, {75, "5", false}, {85, "5+", true}}},
-	{"Week 2 — 3s", []set{{70, "3", false}, {80, "3", false}, {90, "3+", true}}},
-	{"Week 3 — 5/3/1", []set{{75, "5", false}, {85, "3", false}, {95, "1+", true}}},
-	{"Week 4 — Deload", []set{{40, "5", false}, {50, "5", false}, {60, "5", false}}},
+	{
+		"Week 1 — 5s",
+		[]set{
+			{40, "5", true, false},
+			{50, "5", true, false},
+			{60, "3", true, false},
+			{65, "5", false, false},
+			{75, "5", false, false},
+			{85, "5+", false, true},
+		},
+	},
+	{
+		"Week 2 — 3s",
+		[]set{
+			{40, "5", true, false},
+			{50, "5", true, false},
+			{60, "3", true, false},
+			{70, "3", false, false},
+			{80, "3", false, false},
+			{90, "3+", false, true},
+		},
+	},
+	{
+		"Week 3 — 5/3/1",
+		[]set{
+			{40, "5", true, false},
+			{50, "5", true, false},
+			{60, "3", true, false},
+			{75, "5", false, false},
+			{85, "3", false, false},
+			{95, "1+", false, true},
+		},
+	},
+	{
+		"Week 4 — Deload",
+		[]set{
+			{40, "5", false, false},
+			{50, "5", false, false},
+			{60, "5", false, false},
+		},
+	},
 }
 
 // ComputedSet is one prescribed set with its rounded working weight (kg).
 type ComputedSet struct {
 	Percent int     `json:"percent"`
 	Reps    string  `json:"reps"`
+	Warmup  bool    `json:"warmup"`
 	AMRAP   bool    `json:"amrap"`
 	Weight  float64 `json:"weight"`
 }
@@ -73,8 +112,9 @@ func BuildCycle(lifts []LiftMax) Cycle {
 				cl.Sets = append(cl.Sets, ComputedSet{
 					Percent: s.percent,
 					Reps:    s.reps,
+					Warmup:  s.warmup,
 					AMRAP:   s.amrap,
-					Weight:  round(l.TrainingMax * float64(s.percent) / 100),
+					Weight:  lowerBound(round(l.TrainingMax * float64(s.percent) / 100)),
 				})
 			}
 			cw.Lifts = append(cw.Lifts, cl)
@@ -87,6 +127,10 @@ func BuildCycle(lifts []LiftMax) Cycle {
 // round snaps a weight to the smallest loadable increment: 2.5 kg.
 func round(w float64) float64 {
 	return math.Round(w/2.5) * 2.5
+}
+
+func lowerBound(weight float64) float64 {
+	return math.Max(weight, 20.0)
 }
 
 // ---------------------------------------------------------------------------
