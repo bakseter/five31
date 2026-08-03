@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	github.com/coreos/go-oidc/v3 v3.20.0
-	gorm.io/driver/postgres v1.6.0
+	gorm.io/driver/postgres v1.6.2
 	gorm.io/gorm v1.31.2
 )
 
