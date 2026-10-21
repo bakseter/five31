@@ -1,4 +1,4 @@
-FROM golang:alpine@sha256:f2c872bcee949b7be9c490efd02b48a8a2fbf947cdf533f1c58525ec9d8170fd
+FROM golang:alpine@sha256:f2c872bcee949b7be9c490efd02b48a8a2fbf947cdf533f1c58525ec9d8170fd AS build
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ ENV GO111MODULE=on CGO_ENABLED=0 GOOS=linux
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY . .
+COPY *.go ./
 RUN go build -o ./out/executable .
 
 
