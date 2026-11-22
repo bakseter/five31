@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 
-FROM nginx/nginx-unprivileged:1.31.8-alpine-slim@sha256:a2ae214d0266826427b804b0513dce20c9c93b862f1593203f9e6b50be9c2689
+FROM nginx/nginx-unprivileged:1.31.9-alpine-slim@sha256:75e85a09b0f25bd46d49a9fd85589ffa70b0459c8ed5ee0dc6596fd642e1f829
 
 USER root
 
